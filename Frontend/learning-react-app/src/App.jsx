@@ -10,6 +10,12 @@ import EditTutorial from './pages/EditTutorial';
 import MyForm from './pages/MyForm';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import CartPage from './pages/Cart';
+import Orders from './pages/Orders';
+import OrderDetails from './pages/OrderDetails';
+import Checkout from './pages/Checkout';
+import OrderSuccess from './pages/OrderSuccess';
+import EditCart from './pages/EditCart';
 import http from './http';
 import UserContext from './contexts/UserContext';
 
@@ -70,6 +76,12 @@ function App() {
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
+              <Route path={"/cart"} element={<CartPage />} />
+              <Route path={"/orders"} element={<Orders />} />
+              <Route path={"/orders/detail/:orderId"} element={<OrderDetails />} />
+              <Route path={"/checkout"} element={<Checkout />} />
+              <Route path={"/order-success"} element={<OrderSuccess />} />
+              <Route path={"/editcart/:cartId"} element={<EditCart />} />
             </Routes>
           </Container>
         </ThemeProvider>
