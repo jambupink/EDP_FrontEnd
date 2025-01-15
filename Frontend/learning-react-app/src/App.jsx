@@ -4,9 +4,9 @@ import { Container, AppBar, Toolbar, Typography, Box, Button } from '@mui/materi
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import MyTheme from './themes/MyTheme';
-import Tutorials from './pages/Tutorials';
-import AddTutorial from './pages/AddTutorial';
-import EditTutorial from './pages/EditTutorial';
+import Products from './pages/Products';
+import AddProduct from './pages/AddProduct';
+import EditProduct from './pages/EditProduct';
 import MyForm from './pages/MyForm';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -41,7 +41,7 @@ function App() {
                     Learning
                   </Typography>
                 </Link>
-                <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>
+                <Link to="/products" ><Typography>Products</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
@@ -63,10 +63,10 @@ function App() {
 
           <Container>
             <Routes>
-              <Route path={"/"} element={<Tutorials />} />
-              <Route path={"/tutorials"} element={<Tutorials />} />
-              <Route path={"/addtutorial"} element={<AddTutorial />} />
-              <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
+              <Route path={"/"} element={<Products />} />
+              <Route path={"/products"} element={<Products />} />
+              <Route path={"/addproduct"} element={<AddProduct />} />
+              <Route path={"/editproduct/:id"} element={<EditProduct />} />
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
