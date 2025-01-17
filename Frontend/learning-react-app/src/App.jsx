@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import http from './http';
 import UserContext from './contexts/UserContext';
+import Donations from './pages/Donations';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -43,6 +44,7 @@ function App() {
                 </Link>
                 <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
+                <Link to="/donations" ><Typography>Donations</Typography></Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
                   <>
@@ -70,6 +72,7 @@ function App() {
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
+              <Route path={"/donations"} element={<Donations />} />
             </Routes>
           </Container>
         </ThemeProvider>
