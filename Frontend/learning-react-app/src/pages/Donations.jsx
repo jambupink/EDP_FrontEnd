@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
-import { Grid } from '@mui/material';
-import { FormControl, InputLabel, FormHelperText, Select, MenuItem } from '@mui/material';
+import { Box, Typography, TextField, Button, Grid } from '@mui/material';
+import { FormControl, FormHelperText } from '@mui/material';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -9,24 +8,21 @@ import dayjs from 'dayjs';
 import http from '../http';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// npm install @mui/x-date-pickers
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-function Donations() {
+function Donation() {
     const [imageFile, setImageFile] = useState(null);
 
     const formik = useFormik({
         initialValues: {
-            title: 'My title',
-            description: 'My description',
-            price: 0,
-            option: 'A',
-            date: dayjs().add(1, 'day'),
-            time: dayjs().minute(0),
-            condition: '',
+            title: 'Donation Title',
+            description: 'Description',
+            donationDateTime: dayjs().add(1, 'day').minute(0),
             tnc: true,
+            condition: 'brand new',
         },
         validationSchema: yup.object({
             title: yup.string().trim()
@@ -37,11 +33,7 @@ function Donations() {
                 .min(3, 'Description must be at least 3 characters')
                 .max(500, 'Description must be at most 500 characters')
                 .required('Description is required'),
-            price: yup.number().min(0).required('Price is required'),
-            option: yup.string().required('Option is required'),
-            date: yup.date().typeError('Invalid date').required('Date is required'),
-            time: yup.date().typeError('Invalid time').required('Time is required'),
-            condition: yup.string().required('Condition is required'),
+            donationDateTime: yup.date().typeError('Invalid date time').required('Date Time is required'),
             tnc: yup.boolean().oneOf([true], 'Accept Terms & Conditions is required'),
         }),
         onSubmit: (data) => {
@@ -51,11 +43,16 @@ function Donations() {
             let dataToSubmit = { ...data };
             dataToSubmit.title = data.title.trim();
             dataToSubmit.description = data.description.trim();
-            dataToSubmit.date = data.date.format('YYYY-MM-DD');
-            dataToSubmit.time = data.time.format('HH:mm');
+            dataToSubmit.donationDateTime = data.donationDateTime.format('YYYY-MM-DD HH:mm:ss');
+            dataToSubmit.condition = data.condition.trim();
             console.log(dataToSubmit);
-            toast.success('Form submitted successfully');
-        },
+
+            http.post("/donate", dataToSubmit)
+                .then((res) => {
+                    console.log(res.data);
+                    toast.success(`Donation form submitted successfully. Reference = ${res.data.id}`);
+                });
+        }
     });
 
     const onFileChange = (e) => {
@@ -70,8 +67,8 @@ function Donations() {
             formData.append('file', file);
             http.post('/file/upload', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+                    'Content-Type': 'multipart/form-data'
+                }
             })
                 .then((res) => {
                     setImageFile(res.data.filename);
@@ -82,28 +79,33 @@ function Donations() {
         }
     };
 
-    const onDeleteImage = () => {
-        setImageFile(null);
-        toast.info('Image deleted successfully');
+    const deleteImage = () => {
+        if (imageFile) {
+            http.delete(`/file/${imageFile}`)
+                .then(() => {
+                    setImageFile(null);
+                    toast.success('Image deleted successfully');
+                })
+                .catch((error) => {
+                    console.error(error.response || error.message);
+                    toast.error('Failed to delete image');
+                });
+        }
     };
 
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
-                Donations Form
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-                Please fill in the details and pick a date and time to drop off your clothing! 
-                We will get back to you after evaluating your request.
+                Donation Form
             </Typography>
             <Box component="form" onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
                         <TextField
                             fullWidth
                             margin="dense"
                             autoComplete="off"
-                            label="Title"
+                            label="Donation Title"
                             name="title"
                             value={formik.values.title}
                             onChange={formik.handleChange}
@@ -119,7 +121,7 @@ function Donations() {
                             autoComplete="off"
                             multiline
                             minRows={2}
-                            label="Description of the clothing"
+                            label="About Donation"
                             name="description"
                             value={formik.values.description}
                             onChange={formik.handleChange}
@@ -128,39 +130,46 @@ function Donations() {
                             helperText={formik.touched.description && formik.errors.description}
                         />
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                        <FormControl fullWidth margin="dense">
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker
-                                    format="DD/MM/YYYY"
-                                    label="Select Date for dropoff"
-                                    name="date"
-                                    value={formik.values.date}
-                                    onChange={(date) => formik.setFieldValue('date', date)}
-                                    onBlur={() => formik.setFieldTouched('date', true)}
-                                    slotProps={{
-                                        textField: {
-                                            error: formik.touched.date && Boolean(formik.errors.date),
-                                            helperText: formik.touched.date && formik.errors.date,
-                                        },
-                                    }}
-                                />
-                            </LocalizationProvider>
+                    <Grid item xs={12}>
+                        <FormControl fullWidth margin="dense" error={formik.touched.condition && Boolean(formik.errors.condition)}>
+                            <TextField
+                                fullWidth
+                                select
+                                label="Condition"
+                                name="condition"
+                                value={formik.values.condition}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                error={formik.touched.condition && Boolean(formik.errors.condition)}
+                                helperText={formik.touched.condition && formik.errors.condition}
+                            >
+                                <option value="brand new">Brand New</option>
+                                <option value="like new">Like New</option>
+                                <option value="lightly used">Lightly Used</option>
+                                <option value="well used">Well Used</option>
+                                <option value="heavily used">Heavily Used</option>
+                            </TextField>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
                         <FormControl fullWidth margin="dense">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <TimePicker
-                                    label="Select Time for dropoff"
-                                    name="time"
-                                    value={formik.values.time}
-                                    onChange={(time) => formik.setFieldValue('time', time)}
-                                    onBlur={() => formik.setFieldTouched('time', true)}
+                                <DateTimePicker
+                                    format="DD/MM/YYYY hh:mm A"
+                                    label="Select Pickup Date and Time"
+                                    name="donationDateTime"
+                                    value={formik.values.donationDateTime}
+                                    onChange={(datetime) => formik.setFieldValue('donationDateTime', datetime)}
+                                    onBlur={() => formik.setFieldTouched('donationDateTime', true)}
                                     slotProps={{
                                         textField: {
-                                            error: formik.touched.time && Boolean(formik.errors.time),
-                                            helperText: formik.touched.time && formik.errors.time,
+                                            error: formik.touched.donationDateTime && Boolean(formik.errors.donationDateTime),
+                                            helperText: formik.touched.donationDateTime && formik.errors.donationDateTime,
+                                            fullWidth: true,
+                                            margin: "dense"
                                         },
                                     }}
                                 />
@@ -168,27 +177,61 @@ function Donations() {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mt: 2 }}>
+                        <Box sx={{ textAlign: 'center', mt: 2 }}>
                             <Button variant="contained" component="label">
                                 Upload Image
                                 <input hidden accept="image/*" type="file" onChange={onFileChange} />
                             </Button>
                             {imageFile && (
-                                <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                <Box sx={{ mt: 2 }}>
                                     <img
-                                        alt="uploaded"
+                                        alt="donation"
                                         src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}
-                                        style={{ maxWidth: '100px', maxHeight: '100px', marginBottom: '8px' }}
+                                        style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'contain' }}
                                     />
-                                    <Button variant="outlined" color="error" onClick={onDeleteImage}>
-                                        Delete Image
-                                    </Button>
+                                    <Box sx={{ textAlign: 'center', mt: 1 }}>
+                                        <Button
+                                            variant="outlined"
+                                            color="error"
+                                            onClick={deleteImage}
+                                        >
+                                            Delete Image
+                                        </Button>
+                                    </Box>
                                 </Box>
                             )}
-                            <Button variant="contained" type="submit" sx={{ mt: 3 }}>
-                                Submit
-                            </Button>
                         </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControl fullWidth margin="dense" error={formik.touched.tnc && Boolean(formik.errors.tnc)}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="tnc"
+                                        checked={formik.values.tnc}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                }
+                                label="I Accept Terms & Conditions"
+                            />
+                            <FormHelperText>{formik.touched.tnc && formik.errors.tnc}</FormHelperText>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            sx={{
+                                width: '200px',
+                                margin: '0 auto',
+                                display: 'block',
+                                mt: 2,
+                                mb: 4,
+                            }}
+                        >
+                            Submit
+                        </Button>
                     </Grid>
                 </Grid>
             </Box>
@@ -197,4 +240,4 @@ function Donations() {
     );
 }
 
-export default Donations;
+export default Donation;
