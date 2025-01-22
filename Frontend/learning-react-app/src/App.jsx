@@ -13,6 +13,9 @@ import Login from './pages/Login';
 import http from './http';
 import UserContext from './contexts/UserContext';
 import Donations from './pages/Donations';
+import DonationSubmission from './pages/DonationSubmission';
+
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -73,6 +76,9 @@ function App() {
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
               <Route path={"/donations"} element={<Donations />} />
+              <Route path="/donation-submission" element={<DonationSubmission />} />
+              
+              
             </Routes>
           </Container>
         </ThemeProvider>

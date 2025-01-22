@@ -51,6 +51,7 @@ function Donation() {
                 .then((res) => {
                     console.log(res.data);
                     toast.success(`Donation form submitted successfully. Reference = ${res.data.id}`);
+                    window.location.href = "/donation-submission"; //link to DonationSubmission
                 });
         }
     });
