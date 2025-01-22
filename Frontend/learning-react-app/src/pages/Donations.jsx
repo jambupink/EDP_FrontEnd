@@ -99,6 +99,9 @@ function Donation() {
             <Typography variant="h5" sx={{ my: 2 }}>
                 Donation Form
             </Typography>
+            <Typography variant="body1" sx={{ mb: 3 }}>
+                Please enter all the details below and choose a date and time to drop off your clothing.
+            </Typography>
             <Box component="form" onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
