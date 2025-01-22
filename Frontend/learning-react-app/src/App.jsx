@@ -14,6 +14,7 @@ import http from './http';
 import UserContext from './contexts/UserContext';
 import Donations from './pages/Donations';
 import DonationSubmission from './pages/DonationSubmission';
+import Reviewrequest from './pages/Reviewrequest';
 
 
 
@@ -76,7 +77,8 @@ function App() {
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
               <Route path={"/donations"} element={<Donations />} />
-              <Route path="/donation-submission" element={<DonationSubmission />} />
+              <Route path="/donationsubmission" element={<DonationSubmission />} />
+              <Route path="/reviewrequest" element={<Reviewrequest />} />
               
               
             </Routes>

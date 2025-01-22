@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
 function DonationSubmission() {
     return (
@@ -10,6 +10,14 @@ function DonationSubmission() {
             <Typography variant="body1">
                 Thank you for your donation request, we will get back to you soon! Remember to look out for our email regarding your date, time, and location for your drop-off.
             </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3 }}
+                onClick={() => window.location.href = '/reviewrequest'}
+            >
+                Review My Request
+            </Button>
         </Box>
     );
 }
