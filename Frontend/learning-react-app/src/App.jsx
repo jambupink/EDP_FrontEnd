@@ -15,6 +15,7 @@ import UserContext from './contexts/UserContext';
 import Donations from './pages/Donations';
 import DonationSubmission from './pages/DonationSubmission';
 import Reviewrequest from './pages/Reviewrequest';
+import ViewDonations from './pages/ViewDonations';
 
 
 
@@ -48,7 +49,8 @@ function App() {
                 </Link>
                 <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
-                <Link to="/donations" ><Typography>Donations</Typography></Link>
+                <Link to="/donations" ><Typography>Donate</Typography></Link>
+                <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
                   <>
@@ -79,6 +81,8 @@ function App() {
               <Route path={"/donations"} element={<Donations />} />
               <Route path="/donationsubmission" element={<DonationSubmission />} />
               <Route path="/reviewrequest" element={<Reviewrequest />} />
+              <Route path="/viewdonations" element={<ViewDonations />} />
+              
               
               
             </Routes>
