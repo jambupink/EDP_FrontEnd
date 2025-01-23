@@ -44,7 +44,7 @@ function App() {
               <Toolbar disableGutters={true}>
                 <Link to="/">
                   <Typography variant="h6" component="div">
-                    Learning
+                    Youteez
                   </Typography>
                 </Link>
                 <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>

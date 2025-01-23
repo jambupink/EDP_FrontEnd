@@ -3,10 +3,8 @@ import { Box, Typography, Card, CardContent, Button, TextField } from '@mui/mate
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
-import http from '../http'; // Assuming this is your HTTP client setup
+import http from '../http';
 import { useNavigate } from 'react-router-dom';
-
-
 
 function ReviewRequest() {
     const [donationDetails, setDonationDetails] = useState(null);
@@ -16,10 +14,10 @@ function ReviewRequest() {
 
     useEffect(() => {
         // Fetch the most recent donation submission
-        http.get('/donation/latest') // Replace with the correct endpoint
+        http.get('/donation/latest')
             .then((res) => {
                 setDonationDetails(res.data);
-                setNewDateTime(dayjs(res.data.donationDateTime)); // Set initial date for editing
+                setNewDateTime(dayjs(res.data.donationDateTime));
             })
             .catch((error) => {
                 console.error('Error fetching the latest donation:', error);
@@ -28,20 +26,27 @@ function ReviewRequest() {
 
     const handleUpdate = () => {
         if (!newDateTime) {
-            alert("Please select a valid date and time.");
+            alert('Please select a valid date and time.');
             return;
         }
 
-        // Send update request to the server
-        http.put(`/donation/${donationDetails.id}`, { donationDateTime: newDateTime.format('YYYY-MM-DD HH:mm:ss') })
+        const updatedData = {
+            donationDateTime: newDateTime.format('YYYY-MM-DD HH:mm:ss'),
+            imageFile: donationDetails.imageFile || null, // Include imageFile (null if deleted)
+        };
+
+        http.put(`/donation/${donationDetails.id}`, updatedData)
             .then(() => {
-                setDonationDetails((prev) => ({ ...prev, donationDateTime: newDateTime.format('YYYY-MM-DD HH:mm:ss') }));
-                setIsEditing(false); // Exit editing mode
-                alert("Date & Time updated successfully.");
+                setDonationDetails((prev) => ({
+                    ...prev,
+                    donationDateTime: newDateTime.format('YYYY-MM-DD HH:mm:ss'),
+                }));
+                setIsEditing(false);
+                alert('Date & Time updated successfully.');
             })
             .catch((error) => {
                 console.error('Error updating the donation:', error);
-                alert("Failed to update Date & Time.");
+                alert('Failed to update Date & Time.');
             });
     };
 
@@ -128,4 +133,3 @@ function ReviewRequest() {
 }
 
 export default ReviewRequest;
-

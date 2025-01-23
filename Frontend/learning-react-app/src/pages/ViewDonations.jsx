@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Paper, CircularProgress, Alert, Divider } from '@mui/material';
 import dayjs from 'dayjs';
-import http from '../http';
+import http from '../http'; // Ensure this is your configured Axios instance or fetch wrapper
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
@@ -12,7 +12,7 @@ function ViewDonations() {
 
   useEffect(() => {
     // Fetch user donations
-    http.get('/Donation/user-donations')
+    http.get('/Donation/user-donations') // Adjust the endpoint if needed
       .then((res) => {
         setDonations(res.data);
         setLoading(false);
@@ -130,5 +130,6 @@ function ViewDonations() {
 }
 
 export default ViewDonations;
+
 
 
