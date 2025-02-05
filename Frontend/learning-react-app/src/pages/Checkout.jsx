@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, Card, CardContent, Grid, TextField, CircularProgress, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import http from '../http';
 
 function Checkout() {
@@ -11,6 +13,7 @@ function Checkout() {
     const [orderConfirmed, setOrderConfirmed] = useState(false);
     const [orderId, setOrderId] = useState(null); // Store the generated orderId
     const [error, setError] = useState('');
+    const [deliveryDate, setDeliveryDate] = useState(null);
     
     const [paymentDetails, setPaymentDetails] = useState({
         paymentMethod: '',
@@ -27,6 +30,7 @@ function Checkout() {
             userId,
             items: cartItems,
             total: paymentDetails.amount,
+            deliveryDate: deliveryDate,
         };
 
         setLoading(true);
@@ -104,6 +108,19 @@ function Checkout() {
                     </Grid>
                 ))}
             </Grid>
+
+            <Box sx={{ mt: 3 }}>
+                <Typography variant="h6">Select Delivery Date and Time</Typography>
+                <DatePicker
+                    selected={deliveryDate}
+                    onChange={(date) => setDeliveryDate(date)}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={15}
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    minDate={new Date()} // Disable past dates
+                />
+            </Box>
 
             <Box sx={{ mt: 3 }}>
                 <Button variant="contained" color="primary" onClick={handleOrderSubmit} disabled={loading}>
