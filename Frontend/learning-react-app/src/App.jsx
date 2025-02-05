@@ -18,6 +18,12 @@ import OrderSuccess from './pages/OrderSuccess';
 import EditCart from './pages/EditCart';
 import http from './http';
 import UserContext from './contexts/UserContext';
+import Donations from './pages/Donations';
+import DonationSubmission from './pages/DonationSubmission';
+import Reviewrequest from './pages/Reviewrequest';
+import ViewDonations from './pages/ViewDonations';
+
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,11 +50,13 @@ function App() {
               <Toolbar disableGutters={true}>
                 <Link to="/">
                   <Typography variant="h6" component="div">
-                    Learning
+                    Youteez
                   </Typography>
                 </Link>
                 <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
+                <Link to="/donations" ><Typography>Donate</Typography></Link>
+                <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
                   <>
@@ -82,6 +90,10 @@ function App() {
               <Route path={"/checkout"} element={<Checkout />} />
               <Route path={"/order-success"} element={<OrderSuccess />} />
               <Route path={"/editcart/:cartId"} element={<EditCart />} />
+              <Route path={"/donations"} element={<Donations />} />
+              <Route path="/donationsubmission" element={<DonationSubmission />} />
+              <Route path="/reviewrequest" element={<Reviewrequest />} />
+              <Route path="/viewdonations" element={<ViewDonations />} />
             </Routes>
           </Container>
         </ThemeProvider>
