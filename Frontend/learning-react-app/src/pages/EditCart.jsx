@@ -50,3 +50,4 @@ const EditCart = () => {
 };
 
 export default EditCart;
+
