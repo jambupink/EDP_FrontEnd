@@ -51,8 +51,8 @@ function OrderDetails() {
                                     <Card>
                                         <CardContent>
                                             <Typography>{item.productName}</Typography>
-                                            <Typography>{item.size}</Typography>
-                                            <Typography>{item.quantity}</Typography>
+                                            <Typography>Size: {item.size}</Typography>
+                                            <Typography>Quantity: {item.quantity}</Typography>
                                             <Typography>Price: ${item.price}</Typography>
                                         </CardContent>
                                     </Card>

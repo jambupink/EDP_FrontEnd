@@ -1,12 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { Box, Typography, Grid2 as Grid, Card, CardContent, Button, IconButton } from '@mui/material';
-import { ShoppingCart, Delete, Edit } from '@mui/icons-material';
+import { useNavigate, Link } from 'react-router-dom';
+import {
+    Box,
+    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+    IconButton,
+    Divider,
+} from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 import http from '../http';
-import dayjs from 'dayjs';
 import UserContext from '../contexts/UserContext';
-import global from '../global';
 
 function Cart() {
     const [cartItems, setCartItems] = useState([]);
@@ -14,114 +24,112 @@ function Cart() {
     const navigate = useNavigate();
 
     const getCartItems = () => {
-        http.get(`/cart/${user.id}`).then((res) => {
-            console.log(res.data);
-            setCartItems(res.data);
-        });
+        if (user?.id) {
+            http.get(`/cart/${user.id}`)
+                .then((res) => {
+                    setCartItems(res.data);
+                })
+                .catch((error) => console.error('Error fetching cart items:', error));
+        }
     };
 
     const removeCartItem = (cartId) => {
-        console.log("Removing item with cartId:", cartId); // Log the cartId to verify it's being passed correctly
-    
         if (!cartId) {
             console.error('Cart ID is undefined');
             return;
         }
-    
-        http.delete(`/cart/${cartId}`, {
-        
-        })
-        .then(() => {
-            setCartItems((prevItems) => prevItems.filter((item) => item.cartId !== cartId)); 
-        })
-        .catch((error) => {
-            console.error("There was an error deleting the item:", error);
-        });
+
+        http.delete(`/cart/${cartId}`)
+            .then(() => {
+                setCartItems((prevItems) => prevItems.filter((item) => item.cartId !== cartId));
+            })
+            .catch((error) => console.error('Error deleting cart item:', error));
     };
-    
-    
 
     const handleCheckout = () => {
         navigate('/checkout', { state: { cartItems } });
     };
 
     useEffect(() => {
-        if (user && user.id) {
-            getCartItems();
-        }
+        getCartItems();
     }, [user]);
 
-    
-
     return (
-        <Box>
-            <Typography variant="h5" sx={{ my: 2 }}>
+        <Box sx={{ padding: 3 }}>
+            <Typography variant="h4" gutterBottom>
                 Your Cart
             </Typography>
-        
-            <Grid container spacing={2}>
-                {
-                    cartItems.map((item) => {
-                        return (
-                            <Grid item xs={12} md={6} lg={4} key={item.cartId}>
-                                <Card>
-                                    {
-                                        item.image && (
-                                            <Box className="aspect-ratio-container">
-                                                <img alt="cart-item" src={`${import.meta.env.VITE_FILE_BASE_URL}${item.image}`} />
+
+            <Divider sx={{ mb: 3 }} />
+
+            {cartItems.length === 0 ? (
+                <Typography variant="h6" color="text.secondary">
+                    Your cart is empty.
+                </Typography>
+            ) : (
+                <>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Product</TableCell>
+                                    <TableCell>Size</TableCell>
+                                    <TableCell>Quantity</TableCell>
+                                    <TableCell>Price</TableCell>
+                                    <TableCell>Actions</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {cartItems.map((item) => (
+                                    <TableRow key={item.cartId}>
+                                        <TableCell>
+                                            <Box display="flex" alignItems="center">
+                                            
+                                                <Typography>{item.productName}</Typography>
                                             </Box>
-                                        )
-                                    }
-                                    <CardContent>
-                                        <Box sx={{ display: 'flex', mb: 1 }}>
-                                            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                                                {item.productName}
-                                            </Typography>
-                                        </Box>
-    
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
-                                            <Typography>
-                                                {item.size}
-                                            </Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
-                                            <Typography>
-                                                Qty:
-                                                {item.quantity}
-                                            </Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                                            <Typography>
-                                                Price: ${item.price}
-                                            </Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                            <Link to={`/editcart/${item.cartId}`}>
-                                                <IconButton color="primary">
-                                                    <Edit />
+                                        </TableCell>
+                                        <TableCell>{item.size}</TableCell>
+                                        <TableCell>{item.quantity}</TableCell>
+                                        <TableCell>${item.price}</TableCell>
+                                        <TableCell>
+                                            <Box display="flex" gap={1}>
+                                                <Link to={`/editcart/${item.cartId}`}>
+                                                    <IconButton color="primary">
+                                                        <Edit />
+                                                    </IconButton>
+                                                </Link>
+                                                <IconButton
+                                                    color="error"
+                                                    onClick={() => removeCartItem(item.cartId)}
+                                                >
+                                                    <Delete />
                                                 </IconButton>
-                                            </Link>
-                                            <IconButton color="error" onClick={() => {
-                                                console.log('Deleting item with ID:', item.id); // Add this log
-                                                removeCartItem(item.cartId);
-                                            }}>
-                                                <Delete />
-                                            </IconButton>
+                                            </Box>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
-                                        </Box>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        );
-                    })
-                }
-            </Grid>
-
-            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                <Button variant="contained" color="primary" onClick={handleCheckout}>
-                    Proceed to Checkout
-                </Button>
-            </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            mt: 3,
+                        }}
+                    >
+                        <Typography variant="h6">
+                            Total: $
+                            {cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
+                        </Typography>
+                        <Button variant="contained" color="primary" onClick={handleCheckout}>
+                            Proceed to Checkout
+                        </Button>
+                    </Box>
+                </>
+            )}
         </Box>
     );
 }
