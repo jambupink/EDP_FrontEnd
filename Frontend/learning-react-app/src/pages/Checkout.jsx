@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, Card, CardContent, Grid, TextField, CircularProgress } from '@mui/material';
+import { Box, Typography, Button, Card, CardContent, Grid, TextField, CircularProgress, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import http from '../http';
 
 function Checkout() {
@@ -58,6 +58,7 @@ function Checkout() {
             userId,
             paymentMethod: paymentDetails.paymentMethod,
             cvc: paymentDetails.cvc,
+            cardNo: paymentDetails.cardNo,
             amount: paymentDetails.amount,
             customerName: paymentDetails.customerName,
             paymentDate: new Date().toISOString(), // Payment date (can be formatted as required)
@@ -94,11 +95,10 @@ function Checkout() {
                     <Grid item xs={12} md={6} lg={4} key={item.id}>
                         <Card>
                             <CardContent>
-                                <Typography variant="h6">{item.title}</Typography>
+                                <Typography variant="h6">{item.productName}</Typography>
+                                <Typography color="text.secondary">Size: {item.size}</Typography>
+                                <Typography color="text.secondary">Quantity: {item.quantity}</Typography>
                                 <Typography color="text.secondary">Price: ${item.price}</Typography>
-                                <Typography color="text.secondary">
-                                    Added by: {item.user?.name}
-                                </Typography>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -114,22 +114,20 @@ function Checkout() {
             {orderConfirmed && (
                 <Box sx={{ mt: 3 }}>
                     <Typography variant="h6">Payment Information</Typography>
-                    <TextField
-                        label="Payment Method"
-                        variant="outlined"
-                        fullWidth
-                        value={paymentDetails.paymentMethod}
-                        onChange={(e) => setPaymentDetails({ ...paymentDetails, paymentMethod: e.target.value })}
-                        sx={{ mb: 2 }}
-                    />
-                    <TextField
-                        label="CVC"
-                        variant="outlined"
-                        fullWidth
-                        value={paymentDetails.cvc}
-                        onChange={(e) => setPaymentDetails({ ...paymentDetails, cvc: e.target.value })}
-                        sx={{ mb: 2 }}
-                    />
+                    
+                    {/* Payment Method Dropdown */}
+                    <FormControl fullWidth sx={{ mb: 2 }}>
+                        <InputLabel>Payment Method</InputLabel>
+                        <Select
+                            value={paymentDetails.paymentMethod}
+                            onChange={(e) => setPaymentDetails({ ...paymentDetails, paymentMethod: e.target.value })}
+                            label="Payment Method"
+                        >
+                            <MenuItem value="Credit Card">Credit Card</MenuItem>
+                            <MenuItem value="Debit Card">Debit Card</MenuItem>
+                        </Select>
+                    </FormControl>
+
                     <TextField
                         label="Customer Name"
                         variant="outlined"
@@ -138,6 +136,25 @@ function Checkout() {
                         onChange={(e) => setPaymentDetails({ ...paymentDetails, customerName: e.target.value })}
                         sx={{ mb: 2 }}
                     />
+                    
+                    <TextField
+                        label="CVC"
+                        variant="outlined"
+                        fullWidth
+                        value={paymentDetails.cvc}
+                        onChange={(e) => setPaymentDetails({ ...paymentDetails, cvc: e.target.value })}
+                        sx={{ mb: 2 }}
+                    />
+
+                    <TextField
+                        label="Card number"
+                        variant="outlined"
+                        fullWidth
+                        value={paymentDetails.cardNo}
+                        onChange={(e) => setPaymentDetails({ ...paymentDetails, cardNo: e.target.value })}
+                        sx={{ mb: 2 }}
+                    />
+                    
                     <Box sx={{ mt: 2 }}>
                         <Button variant="contained" color="primary" onClick={handlePaymentSubmit}>
                             Submit Payment

@@ -58,6 +58,8 @@ function App() {
                 <Link to="/donations" ><Typography>Donate</Typography></Link>
                 <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
+                <Link to="/cart" ><Typography>Cart</Typography></Link>
+                <Link to="/orders" ><Typography>Orders</Typography></Link>
                 {user && (
                   <>
                     <Typography>{user.name}</Typography>
