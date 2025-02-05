@@ -17,6 +17,11 @@ import EditAccount from './pages/latiff/EditAccount';
 import EditPassword from './pages/latiff/EditPassword';
 import ConfirmEmail from './pages/latiff/ConfirmEmail';
 import AccountPage from './pages/latiff/AccountPage';
+import AdminPage from './pages/latiff/admin/AdminPage';
+import Users from './pages/latiff/admin/Users';
+import UsersEdit from './pages/latiff/admin/UsersEdit';
+import Roles from './pages/latiff/admin/Roles';
+import RolesEdit from './pages/latiff/admin/RolesEdit';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -27,7 +32,7 @@ function App() {
         setUser(res.data.user);
       });
     }
-  }, []);
+  }, [user]);
 
   const logout = () => {
     localStorage.clear();
@@ -51,14 +56,13 @@ function App() {
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
                   <>
-                    <Typography>{user.name}</Typography>
-                    <Button onClick={logout}>Logout</Button>
-                    <Link to={`/editaccount/${user.id}`}><Typography>Edit Account</Typography></Link>
-                    <Link to={`/editpassword/${user.id}`}><Typography>Edit Password</Typography></Link>
-                    <Link to={`/account/${user.id}`}><Typography>Accountpage</Typography></Link>
+                    <Link to={`/account/${user.id}`}><Typography>{user.name}</Typography></Link>
                   </>
                 )
                 }
+                {user && user.userRoleId == 2 && (
+                  <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
+                )}
                 {!user && (
                   <>
                     <Link to="/register" ><Typography>Register</Typography></Link>
@@ -83,6 +87,11 @@ function App() {
               <Route path={"/editpassword/:id"} element={<EditPassword/>} />
               <Route path={"/confirm-email"} element={<ConfirmEmail/>} />
               <Route path={"/account/:id"} element={<AccountPage/>}/>
+              <Route path={"/admin/:id"} element={<AdminPage/>}/>
+              <Route path={"/adminusers" } element={<Users/>}/>
+              <Route path={"/adminusers/edit/:id"} element={<UsersEdit/>}/>
+              <Route path={"/adminroles"} element={<Roles/>}/>
+              <Route path={"/adminroles/edit/:id"} element={<RolesEdit/>}/>
             </Routes>
           </Container>
         </ThemeProvider>

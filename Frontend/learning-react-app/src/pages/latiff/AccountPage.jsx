@@ -24,7 +24,7 @@ function AccountPage() {
 
     const logout = () => {
         localStorage.clear(); 
-        navigate('/login'); 
+        window.location = "/"; 
     };
 
     const renderContent = () => {
