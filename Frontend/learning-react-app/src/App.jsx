@@ -38,10 +38,10 @@ function App() {
               <Toolbar disableGutters={true}>
                 <Link to="/">
                   <Typography variant="h6" component="div">
-                    Learning
+                    Youteez
                   </Typography>
                 </Link>
-                <Link to="/products" ><Typography>Products</Typography></Link>
+                <Link to="/products" ><Typography>Shop</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
