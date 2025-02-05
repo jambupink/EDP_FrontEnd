@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button, Grid2 as Grid } from '@mui/material';
+import { Box, Typography, TextField, Button, Grid2 as Grid, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -42,10 +42,7 @@ function EditAccount() {
                             .min(3, 'Title must be at least 3 characters')
                             .max(200, 'Title must be at most 200 characters')
                             .nullable(),
-            gender: yup.string().trim()
-                            .min(3, 'Title must be at least 3 characters')
-                            .max(100, 'Title must be at most 100 characters')
-                            .nullable(),
+            gender: yup.string().nullable(),
             mobileNumber: yup.string().trim()
                             .min(3, 'Title must be at least 3 characters')
                             .max(100, 'Title must be at most 100 characters')
@@ -103,7 +100,23 @@ function EditAccount() {
                                 error={formik.touched.email && Boolean(formik.errors.email)}
                                 helperText={formik.touched.email && Boolean(formik.errors.email)}
                             />
-                            <TextField
+                            <FormControl fullWidth margin="dense"
+                                error={formik.touched.gender && Boolean(formik.errors.gender)}>
+                                <InputLabel>gender</InputLabel>
+                                <Select label="gender"
+                                    name="gender"
+                                    value={formik.values.gender}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                >
+                                    <MenuItem value={'male'}>Male</MenuItem>
+                                    <MenuItem value={'female'}>Female</MenuItem>
+                                    <MenuItem value={'unknown'}>Unknown</MenuItem>
+                                    <MenuItem value={'others'}>Others</MenuItem>
+                                </Select>
+                                <FormHelperText>{formik.touched.gender && formik.errors.gender}</FormHelperText>
+                            </FormControl>
+                            {/* <TextField
                                 fullWidth margin="dense" autoComplete='off'
                                 label="gender"
                                 name= "gender"
@@ -112,7 +125,7 @@ function EditAccount() {
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.gender && Boolean(formik.errors.gender)}
                                 helperText={formik.touched.gender && Boolean(formik.errors.gender)}
-                            />
+                            /> */}
                             <TextField
                                 fullWidth margin="dense" autoComplete='off'
                                 label="mobileNumber"
