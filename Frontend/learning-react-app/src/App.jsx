@@ -8,10 +8,15 @@ import Tutorials from './pages/Tutorials';
 import AddTutorial from './pages/AddTutorial';
 import EditTutorial from './pages/EditTutorial';
 import MyForm from './pages/MyForm';
-import Register from './pages/Register';
-import Login from './pages/Login';
 import http from './http';
+// ------------------------ Latiff -------------------------
+import Register from './pages/latiff/Register'
+import Login from './pages/latiff/Login';
 import UserContext from './contexts/UserContext';
+import EditAccount from './pages/latiff/EditAccount';
+import EditPassword from './pages/latiff/EditPassword';
+import ConfirmEmail from './pages/latiff/ConfirmEmail';
+import AccountPage from './pages/latiff/AccountPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,6 +53,9 @@ function App() {
                   <>
                     <Typography>{user.name}</Typography>
                     <Button onClick={logout}>Logout</Button>
+                    <Link to={`/editaccount/${user.id}`}><Typography>Edit Account</Typography></Link>
+                    <Link to={`/editpassword/${user.id}`}><Typography>Edit Password</Typography></Link>
+                    <Link to={`/account/${user.id}`}><Typography>Accountpage</Typography></Link>
                   </>
                 )
                 }
@@ -67,9 +75,14 @@ function App() {
               <Route path={"/tutorials"} element={<Tutorials />} />
               <Route path={"/addtutorial"} element={<AddTutorial />} />
               <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
+              <Route path={"/form"} element={<MyForm />} />
+              {/* latiff */}
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
-              <Route path={"/form"} element={<MyForm />} />
+              <Route path={"/editaccount/:id"} element={<EditAccount/>} />
+              <Route path={"/editpassword/:id"} element={<EditPassword/>} />
+              <Route path={"/confirm-email"} element={<ConfirmEmail/>} />
+              <Route path={"/account/:id"} element={<AccountPage/>}/>
             </Routes>
           </Container>
         </ThemeProvider>
