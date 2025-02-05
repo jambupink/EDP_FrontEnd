@@ -20,7 +20,12 @@ function AccountPage() {
             setUser(res.data);
             setLoading(false);
         });
-    }, [id]); // Added dependency array to prevent infinite requests
+    }, [id]); 
+
+    const logout = () => {
+        localStorage.clear(); 
+        navigate('/login'); 
+    };
 
     const renderContent = () => {
         switch (selectedContent) {
@@ -36,18 +41,17 @@ function AccountPage() {
     return (
         <Container component="main" maxWidth="lg">
             <Box sx={{ display: 'flex', gap: 3, mt: 3 }}>
-                {/* Sidebar - Fixed Width */}
                 <Paper
                     elevation={3}
                     sx={{
-                        width: '300px', // Fixed width for sidebar
-                        minHeight: '400px', // Minimum height for better appearance
+                        width: '300px',
+                        minHeight: '400px', 
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         padding: 2,
                         position: 'sticky',
-                        top: '20px', // Makes it stick to the top while scrolling
+                        top: '20px', 
                     }}
                 >
                     <Avatar>
@@ -73,13 +77,24 @@ function AccountPage() {
                     >
                         Change Password
                     </Button>
+                   
+                    <Box sx={{ flexGrow: 1 }} />
+
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        sx={{ mt: 2, width: '100%' }}
+                        onClick={logout}
+                    >
+                        Logout
+                    </Button>
                 </Paper>
 
-                {/* Right Content - Flexible */}
+             
                 <Paper
                     elevation={3}
                     sx={{
-                        flexGrow: 1, // Allows the content to take remaining space
+                        flexGrow: 1, 
                         padding: 2,
                         minHeight: '400px'
                     }}
