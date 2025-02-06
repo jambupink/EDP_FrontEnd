@@ -4,9 +4,10 @@ import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import http from '../../../http';
+import { ToastContainer, toast } from 'react-toastify';
 
 function RolesEdit() {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
@@ -26,7 +27,7 @@ function RolesEdit() {
 
     const formik = useFormik({
         initialValues: role,
-        enableReinitialize: true, 
+        enableReinitialize: true,
         validationSchema: yup.object({
             role: yup.string().min(3).max(50).required("Role name is required"),
             description: yup.string().min(5).max(200).required("Description is required"),
@@ -34,8 +35,10 @@ function RolesEdit() {
         onSubmit: (values) => {
             http.put(`/userrole/${id}`, values)
                 .then(() => {
-                    alert("Role updated successfully!");
-                    navigate("/");
+                    toast.success("Role updated successfully!");
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 2000);
                 })
                 .catch((err) => console.error("Error updating role:", err));
         }
@@ -81,6 +84,7 @@ function RolesEdit() {
                     </Box>
                 </Box>
             )}
+            <ToastContainer />
         </Container>
     );
 }

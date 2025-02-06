@@ -34,7 +34,10 @@ function Login() {
                 .then((res) => {
                     localStorage.setItem("accessToken", res.data.accessToken);
                     setUser(res.data.user);
-                    navigate("/");
+                    toast.success("Login successfull");
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 2000);
                 })
                 .catch(function (err) {
                     toast.error(`${err.response.data.message}`);

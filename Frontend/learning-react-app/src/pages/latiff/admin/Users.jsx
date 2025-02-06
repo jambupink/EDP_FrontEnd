@@ -2,6 +2,7 @@ import { Avatar, Box, Button, Card, CardContent, CardHeader, Divider, Grid, Grid
 import React, { useEffect, useState } from 'react';
 import http from '../../../http';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Users() {
     const [userList, setUserList] = useState([]);
@@ -12,20 +13,20 @@ function Users() {
         })
     }, [])
 
-    function deleteUser(id){
+    function deleteUser(id) {
         if (!window.confirm("Are you sure you want to delete this user?")) return;
 
-         http.delete(`/user/${id}`)
+        http.delete(`/user/${id}`)
             .then(() => {
                 setUserList(userList.filter(user => user.id !== id));
-                console.log(`User ${id} deleted successfully`);
+                toast.success(`User ${id} deleted successfully`);
             })
             .catch((err) => {
                 console.error("Error deleting user:", err);
             });
     }
 
-    
+
 
     return (
         <Box sx={{ p: 3 }}>
@@ -67,11 +68,11 @@ function Users() {
                             <Divider />
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
                                 <Link to={`/adminusers/edit/${user.id}`}>
-                                <Button variant="contained" color="primary">
-                                    Edit
-                                </Button>
+                                    <Button variant="contained" color="primary">
+                                        Edit
+                                    </Button>
                                 </Link>
-                                
+
                                 <Button variant="outlined" color="error" onClick={() => deleteUser(user.id)}>
                                     Delete
                                 </Button>
@@ -80,6 +81,7 @@ function Users() {
                     </Grid>
                 ))}
             </Grid>
+            <ToastContainer />
         </Box>
 
     )

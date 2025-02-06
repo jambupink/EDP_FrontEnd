@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import http from '../../http';
+import { ToastContainer, toast } from 'react-toastify';
 
 function EditPassword() {
     const { id } = useParams();
@@ -48,7 +49,8 @@ function EditPassword() {
             http.put(`/user/password/${id}`, data)
                 .then((res) => {
                     console.log(res.data);
-                    // navigate("/tutorials");
+                    toast.success("Password change successfully")
+                    // navigate(0);
                 });
 
         }
@@ -102,6 +104,7 @@ function EditPassword() {
                     </Box>
                 )
             }
+            <ToastContainer/>
         </Box>
     )
 }

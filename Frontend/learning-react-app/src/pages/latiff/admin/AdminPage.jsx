@@ -63,12 +63,12 @@ const renderContent = () => {
         >
           UserRole
         </Button>
-        <Button
+        {/* <Button
           variant={selectedTab === "products" ? "contained" : "outlined"}
           onClick={() => setSelectedTab("products")}
         >
           Product
-        </Button>
+        </Button> */}
       </Paper>
 
       {/* Content Area */}

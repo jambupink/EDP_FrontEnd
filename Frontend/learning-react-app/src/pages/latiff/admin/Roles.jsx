@@ -2,6 +2,8 @@ import { Avatar, Box, Button, Card, CardContent, CardHeader, Divider, Grid, Typo
 import React, { useEffect, useState } from 'react';
 import http from '../../../http';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+
 function Roles() {
     const [roleList, setRoleList] = useState([]);
     const [open, setOpen] = useState(false);
@@ -19,6 +21,7 @@ function Roles() {
                 setOpen(false);
                 setNewRole({ role: '', description: '' });
                 http.get('/userrole').then((res) => setRoleList(res.data)); 
+                toast.success("role added successfully")
             })
             .catch((err) => console.error("Error adding role:", err));
     };
@@ -29,7 +32,7 @@ function Roles() {
         http.delete(`/userrole/${id}`)
         .then(() => {
             setRoleList(roleList.filter(role => role.id !== id));
-            console.log(`Role ${id} deleted successfully`);
+            toast.success(`Role ${id} deleted successfully`);
         })
         .catch((err) => {
             console.error("Error deleting role:", err);
@@ -108,6 +111,7 @@ function Roles() {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <ToastContainer/>
         </Box>
     )
 }

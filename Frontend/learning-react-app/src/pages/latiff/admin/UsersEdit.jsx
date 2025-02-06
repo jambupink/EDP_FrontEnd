@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as yup from 'yup';
 import http from '../../../http'
+import { ToastContainer, toast } from 'react-toastify';
 
 function UsersEdit() {
     const { id } = useParams();
@@ -54,7 +55,10 @@ function UsersEdit() {
             console.log(data)
             http.put(`/user/${id}`, data)
                 .then(() => {
-                    navigate("/");
+                    toast.success("User Edited successfully");
+                    // setTimeout(() => {
+                    //     navigate(0);
+                    // }, 2000);
                 })
                 .catch((err) => console.error("Error updating user:", err));
         }
@@ -188,6 +192,7 @@ function UsersEdit() {
                     </Box>
                 </Box>
             )}
+            <ToastContainer />
         </Container>
     )
 }

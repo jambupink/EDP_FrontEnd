@@ -45,7 +45,7 @@ function Register() {
             http.post("/user/register", data)
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/login");
+                    toast.success("Check your email for link");
                 })
                 .catch(function (err) {
                     toast.error(`${err.response.data.message}`);

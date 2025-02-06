@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import http from '../../http';
+import { ToastContainer, toast } from 'react-toastify';
 
 function EditAccount() {
     const { id } = useParams();
@@ -64,6 +65,7 @@ function EditAccount() {
             http.put(`/user/${id}`, data)
             .then((res) => {
                 console.log(res.data);
+                toast.success("Account successfully edited")
             });
             
         }
@@ -156,6 +158,7 @@ function EditAccount() {
                 </Box>
             )
         }
+        <ToastContainer/>
     </Box>  
   )
 }
