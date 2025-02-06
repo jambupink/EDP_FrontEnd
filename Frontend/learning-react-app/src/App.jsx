@@ -17,12 +17,15 @@ import OrderDetails from './pages/OrderDetails';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import EditCart from './pages/EditCart';
-
+import FeedbackForm from './pages/FeedbackForm';
+import { Feed, Feedback } from '@mui/icons-material';
+import MyFeedbacks from './pages/MyFeedbacks';
 
 // ------------------------ Latiff -------------------------
 import Register from './pages/latiff/Register'
 import Login from './pages/latiff/Login';
 import UserContext from './contexts/UserContext';
+
 import EditAccount from './pages/latiff/EditAccount';
 import EditPassword from './pages/latiff/EditPassword';
 import ConfirmEmail from './pages/latiff/ConfirmEmail';
@@ -39,6 +42,7 @@ import Donations from './pages/Donations';
 import DonationSubmission from './pages/DonationSubmission';
 import Reviewrequest from './pages/Reviewrequest';
 import ViewDonations from './pages/ViewDonations';
+
 
 
 
@@ -73,14 +77,23 @@ function App() {
                 </Link>
                 <Link to="/products" ><Typography>Shop</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
+
                 <Link to="/donations" ><Typography>Donate</Typography></Link>
                 <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
+
                 <Box sx={{ flexGrow: 1 }}></Box>
                 <Link to="/cart" ><Typography>Cart</Typography></Link>
                 <Link to="/orders" ><Typography>Orders</Typography></Link>
                 {user && (
                   <>
+
+                  <Link to="/feedbackform"><Typography>Feedback Page</Typography></Link>
+                  <Link to="/my-feedbacks"><Typography>My Feedbacks</Typography></Link>
+                    <Typography>{user.name}</Typography>
+                    <Button onClick={logout}>Logout</Button>
+
                     <Link to={`/account/${user.id}`}><Typography>{user.name}</Typography></Link>
+
                   </>
                 )
                 }
@@ -108,6 +121,11 @@ function App() {
 
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
+
+              <Route path={"/form"} element={<MyForm />} />
+              <Route path={"/feedbackform"} element={<FeedbackForm />} />
+              <Route path="/my-feedbacks" element={<MyFeedbacks />} />
+
               <Route path={"/editaccount/:id"} element={<EditAccount />} />
               <Route path={"/editpassword/:id"} element={<EditPassword />} />
               <Route path={"/confirm-email"} element={<ConfirmEmail />} />
@@ -130,6 +148,7 @@ function App() {
               <Route path="/donationsubmission" element={<DonationSubmission />} />
               <Route path="/reviewrequest" element={<Reviewrequest />} />
               <Route path="/viewdonations" element={<ViewDonations />} />
+
 
             </Routes>
           </Container>
