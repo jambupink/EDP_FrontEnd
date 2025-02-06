@@ -9,6 +9,16 @@ import AddTutorial from './pages/AddTutorial';
 import EditTutorial from './pages/EditTutorial';
 import MyForm from './pages/MyForm';
 import http from './http';
+
+
+import CartPage from './pages/Cart';
+import Orders from './pages/Orders';
+import OrderDetails from './pages/OrderDetails';
+import Checkout from './pages/Checkout';
+import OrderSuccess from './pages/OrderSuccess';
+import EditCart from './pages/EditCart';
+
+
 // ------------------------ Latiff -------------------------
 import Register from './pages/latiff/Register'
 import Login from './pages/latiff/Login';
@@ -23,6 +33,15 @@ import UsersEdit from './pages/latiff/admin/UsersEdit';
 import Roles from './pages/latiff/admin/Roles';
 import RolesEdit from './pages/latiff/admin/RolesEdit';
 import Unauthorized from './pages/latiff/admin/Unauthorized';
+
+
+import Donations from './pages/Donations';
+import DonationSubmission from './pages/DonationSubmission';
+import Reviewrequest from './pages/Reviewrequest';
+import ViewDonations from './pages/ViewDonations';
+
+
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -49,12 +68,16 @@ function App() {
               <Toolbar disableGutters={true}>
                 <Link to="/">
                   <Typography variant="h6" component="div">
-                    Learning
+                    Youteez
                   </Typography>
                 </Link>
                 <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
+                <Link to="/donations" ><Typography>Donate</Typography></Link>
+                <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
+                <Link to="/cart" ><Typography>Cart</Typography></Link>
+                <Link to="/orders" ><Typography>Orders</Typography></Link>
                 {user && (
                   <>
                     <Link to={`/account/${user.id}`}><Typography>{user.name}</Typography></Link>
@@ -81,6 +104,7 @@ function App() {
               <Route path={"/addtutorial"} element={<AddTutorial />} />
               <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
               <Route path={"/form"} element={<MyForm />} />
+              
               {/* latiff */}
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
@@ -94,6 +118,19 @@ function App() {
               {/* <Route path={"/adminroles"} element={<Roles />} /> */}
               <Route path={"/adminroles/edit/:id"} element={<RolesEdit />} />
               <Route path={"/unauthorized"} element={<Unauthorized />} />
+
+             
+              <Route path={"/cart"} element={<CartPage />} />
+              <Route path={"/orders"} element={<Orders />} />
+              <Route path={"/orders/detail/:orderId"} element={<OrderDetails />} />
+              <Route path={"/checkout"} element={<Checkout />} />
+              <Route path={"/order-success"} element={<OrderSuccess />} />
+              <Route path={"/editcart/:cartId"} element={<EditCart />} />
+              <Route path={"/donations"} element={<Donations />} />
+              <Route path="/donationsubmission" element={<DonationSubmission />} />
+              <Route path="/reviewrequest" element={<Reviewrequest />} />
+              <Route path="/viewdonations" element={<ViewDonations />} />
+
             </Routes>
           </Container>
         </ThemeProvider>
