@@ -12,6 +12,9 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import http from './http';
 import UserContext from './contexts/UserContext';
+import FeedbackForm from './pages/FeedbackForm';
+import { Feed, Feedback } from '@mui/icons-material';
+import MyFeedbacks from './pages/MyFeedbacks';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -43,9 +46,12 @@ function App() {
                 </Link>
                 <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
+                
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
                   <>
+                  <Link to="/feedbackform"><Typography>Feedback Page</Typography></Link>
+                  <Link to="/my-feedbacks"><Typography>My Feedbacks</Typography></Link>
                     <Typography>{user.name}</Typography>
                     <Button onClick={logout}>Logout</Button>
                   </>
@@ -70,6 +76,8 @@ function App() {
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
+              <Route path={"/feedbackform"} element={<FeedbackForm />} />
+              <Route path="/my-feedbacks" element={<MyFeedbacks />} />
             </Routes>
           </Container>
         </ThemeProvider>
