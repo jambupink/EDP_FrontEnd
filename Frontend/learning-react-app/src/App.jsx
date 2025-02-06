@@ -4,9 +4,9 @@ import { Container, AppBar, Toolbar, Typography, Box, Button } from '@mui/materi
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import MyTheme from './themes/MyTheme';
-import Tutorials from './pages/Tutorials';
-import AddTutorial from './pages/AddTutorial';
-import EditTutorial from './pages/EditTutorial';
+import Products from './pages/Products';
+import AddProduct from './pages/AddProduct';
+import EditProduct from './pages/EditProduct';
 import MyForm from './pages/MyForm';
 import http from './http';
 
@@ -71,7 +71,7 @@ function App() {
                     Youteez
                   </Typography>
                 </Link>
-                <Link to="/tutorials" ><Typography>Tutorials</Typography></Link>
+                <Link to="/products" ><Typography>Shop</Typography></Link>
                 <Link to="/form" ><Typography>Form</Typography></Link>
                 <Link to="/donations" ><Typography>Donate</Typography></Link>
                 <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
@@ -99,13 +99,13 @@ function App() {
 
           <Container>
             <Routes>
-              <Route path={"/"} element={<Tutorials />} />
-              <Route path={"/tutorials"} element={<Tutorials />} />
-              <Route path={"/addtutorial"} element={<AddTutorial />} />
-              <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
-              <Route path={"/form"} element={<MyForm />} />
-              
+              <Route path={"/"} element={<Products />} />
+              <Route path={"/products"} element={<Products />} />
+              <Route path={"/addproduct"} element={<AddProduct />} />
+              <Route path={"/editproduct/:id"} element={<EditProduct />} />
+
               {/* latiff */}
+
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/editaccount/:id"} element={<EditAccount />} />
