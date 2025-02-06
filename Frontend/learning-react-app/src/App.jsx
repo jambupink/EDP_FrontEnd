@@ -32,7 +32,7 @@ function App() {
         setUser(res.data.user);
       });
     }
-  }, [user]);
+  }, []);
 
   const logout = () => {
     localStorage.clear();

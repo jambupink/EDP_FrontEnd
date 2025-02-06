@@ -5,26 +5,26 @@ import Users from './Users';
 import Roles from './Roles';
 
 function AdminPage() {
-     const { id } = useParams();
+  const { id } = useParams();
 
-     const [selectedTab, setSelectedTab] = useState("users"); // Default tab
+  const [selectedTab, setSelectedTab] = useState("users");
 
-    
 
-     const renderContent = () => {
-       switch (selectedTab) {
-         case "users":
-           return <Users/>;
-         case "roles":
-           return <Roles/>;
-        //  case "products":
-        //    return <ProductsList />;
-        //  default:
-        //    return <UsersList />;
-       }
-     };
+
+  const renderContent = () => {
+    switch (selectedTab) {
+      case "users":
+        return <Users />;
+      case "roles":
+        return <Roles />;
+      //  case "products":
+      //    return <ProductsList />;
+      //  default:
+      //    return <UsersList />;
+    }
+  };
   return (
-       <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg">
       {/* Top Bar with Tabs */}
       <Paper elevation={3} sx={{ p: 2, mb: 2, display: "flex", gap: 2 }}>
         <Button
