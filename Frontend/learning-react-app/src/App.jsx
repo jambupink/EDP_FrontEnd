@@ -22,6 +22,7 @@ import Users from './pages/latiff/admin/Users';
 import UsersEdit from './pages/latiff/admin/UsersEdit';
 import Roles from './pages/latiff/admin/Roles';
 import RolesEdit from './pages/latiff/admin/RolesEdit';
+import Unauthorized from './pages/latiff/admin/Unauthorized';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -83,15 +84,16 @@ function App() {
               {/* latiff */}
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
-              <Route path={"/editaccount/:id"} element={<EditAccount/>} />
-              <Route path={"/editpassword/:id"} element={<EditPassword/>} />
-              <Route path={"/confirm-email"} element={<ConfirmEmail/>} />
-              <Route path={"/account/:id"} element={<AccountPage/>}/>
-              <Route path={"/admin/:id"} element={<AdminPage/>}/>
-              <Route path={"/adminusers" } element={<Users/>}/>
-              <Route path={"/adminusers/edit/:id"} element={<UsersEdit/>}/>
-              <Route path={"/adminroles"} element={<Roles/>}/>
-              <Route path={"/adminroles/edit/:id"} element={<RolesEdit/>}/>
+              <Route path={"/editaccount/:id"} element={<EditAccount />} />
+              <Route path={"/editpassword/:id"} element={<EditPassword />} />
+              <Route path={"/confirm-email"} element={<ConfirmEmail />} />
+              <Route path={"/account/:id"} element={<AccountPage />} />
+              <Route path={"/admin/:id"} element={<AdminPage />} />
+              {/* <Route path={"/adminusers"} element={<Users />} /> */}
+              <Route path={"/adminusers/edit/:id"} element={<UsersEdit />} />
+              {/* <Route path={"/adminroles"} element={<Roles />} /> */}
+              <Route path={"/adminroles/edit/:id"} element={<RolesEdit />} />
+              <Route path={"/unauthorized"} element={<Unauthorized />} />
             </Routes>
           </Container>
         </ThemeProvider>

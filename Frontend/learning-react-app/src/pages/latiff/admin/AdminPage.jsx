@@ -1,17 +1,40 @@
 import { Button, Container, Paper, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Users from './Users';
 import Roles from './Roles';
+import http from '../../../http'
 
 function AdminPage() {
   const { id } = useParams();
-
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState("users");
 
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      http.get('/user/auth').then((res) => {
+        setUser(res.data.user);
+        setLoading(false);
+      }).catch(() => {
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, []);
+  
+  if (loading) {
+    return <Typography>Loading...</Typography>
+  }
 
+  if (!user || user.userRoleId !== 2) {
+    navigate('/unauthorized');
+    return null;
+  }
 
-  const renderContent = () => {
+const renderContent = () => {
     switch (selectedTab) {
       case "users":
         return <Users />;
@@ -19,10 +42,11 @@ function AdminPage() {
         return <Roles />;
       //  case "products":
       //    return <ProductsList />;
-      //  default:
-      //    return <UsersList />;
+      default:
+        return <Users />;
     }
   };
+  
   return (
     <Container component="main" maxWidth="lg">
       {/* Top Bar with Tabs */}
@@ -52,7 +76,7 @@ function AdminPage() {
         {renderContent()}
       </Paper>
     </Container>
-  )
+  );
 }
 
 export default AdminPage
