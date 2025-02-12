@@ -7,6 +7,8 @@ import MyTheme from './themes/MyTheme';
 import Products from './pages/Products';
 import AddProduct from './pages/AddProduct';
 import EditProduct from './pages/EditProduct';
+import ProductDetail from './pages/ProductDetail';
+
 import MyForm from './pages/MyForm';
 import http from './http';
 
@@ -20,6 +22,8 @@ import EditCart from './pages/EditCart';
 import FeedbackForm from './pages/FeedbackForm';
 import { Feed, Feedback } from '@mui/icons-material';
 import MyFeedbacks from './pages/MyFeedbacks';
+import EditFeedback from './pages/EditFeedback';
+import AdminFeedbacks from './pages/AdminFeedbacks';
 
 // ------------------------ Latiff -------------------------
 import Register from './pages/latiff/Register'
@@ -80,7 +84,7 @@ function App() {
 
                 <Link to="/donations" ><Typography>Donate</Typography></Link>
                 <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
-
+                
                 <Box sx={{ flexGrow: 1 }}></Box>
                 <Link to="/cart" ><Typography>Cart</Typography></Link>
                 <Link to="/orders" ><Typography>Orders</Typography></Link>
@@ -98,7 +102,10 @@ function App() {
                 )
                 }
                 {user && user.userRoleId == 2 && (
+                  <>
                   <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
+                  <Link to={`admin-feedbacks`}><Typography>AdminFeedback</Typography></Link>
+                  </>
                 )}
                 {!user && (
                   <>
@@ -116,16 +123,17 @@ function App() {
               <Route path={"/products"} element={<Products />} />
               <Route path={"/addproduct"} element={<AddProduct />} />
               <Route path={"/editproduct/:id"} element={<EditProduct />} />
+              <Route path="/productdetail/:id" element={<ProductDetail />} /> 
 
               {/* latiff */}
 
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
-
+              <Route path="/admin-feedbacks" element={<AdminFeedbacks />} /> 
               <Route path={"/form"} element={<MyForm />} />
               <Route path={"/feedbackform"} element={<FeedbackForm />} />
               <Route path="/my-feedbacks" element={<MyFeedbacks />} />
-
+              <Route path="/edit-feedback/:id" element={<EditFeedback />} />
               <Route path={"/editaccount/:id"} element={<EditAccount />} />
               <Route path={"/editpassword/:id"} element={<EditPassword />} />
               <Route path={"/confirm-email"} element={<ConfirmEmail />} />
