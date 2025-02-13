@@ -8,6 +8,9 @@ import Products from './pages/Products';
 import AddProduct from './pages/AddProduct';
 import EditProduct from './pages/EditProduct';
 import ProductDetail from './pages/ProductDetail';
+import AddReview from "./pages/AddReview";
+import ReviewDetail from "./pages/ReviewDetail";
+import EditReview from "./pages/EditReview";
 
 import MyForm from './pages/MyForm';
 import http from './http';
@@ -124,6 +127,9 @@ function App() {
               <Route path={"/addproduct"} element={<AddProduct />} />
               <Route path={"/editproduct/:id"} element={<EditProduct />} />
               <Route path="/productdetail/:id" element={<ProductDetail />} /> 
+              <Route path="/add-review/:id" element={<AddReview />} />
+              <Route path="/product/:id/reviews" element={<ReviewDetail />} />
+              <Route path="/edit-review/:reviewId" element={<EditReview />} />
 
               {/* latiff */}
 

@@ -19,6 +19,11 @@ function Products() {
         fetchProducts();
     }, []);
 
+    useEffect(() => {
+        // Show all products initially
+        setFilteredProducts(productList);
+    }, [productList]); 
+
     const onSearchChange = (e) => setSearch(e.target.value);
 
     // Fetch all products

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Box, Typography, Grid, Button, Card, CardMedia, Select, MenuItem } from '@mui/material';
-import http from '../http';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Box, Typography, Grid, Button, Card, CardMedia, Select, MenuItem } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star"; // For star ratings
+import http from "../http";
 
 function ProductDetail() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedColor, setSelectedColor] = useState('');
@@ -12,6 +14,8 @@ function ProductDetail() {
     const [stock, setStock] = useState(null);
     const [availableSizes, setAvailableSizes] = useState([]);
     const [availableColors, setAvailableColors] = useState([]);
+    const [avgRating, setAvgRating] = useState(null);
+    const [totalReviews, setTotalReviews] = useState(0);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -26,8 +30,16 @@ function ProductDetail() {
 
                 setAvailableColors(colors);
                 setAvailableSizes(sizes);
+
+                // Calculate average rating
+                if (res.data.reviews.length > 0) {
+                    const totalRating = res.data.reviews.reduce((sum, review) => sum + review.rating, 0);
+                    const avg = (totalRating / res.data.reviews.length).toFixed(1);
+                    setAvgRating(avg);
+                    setTotalReviews(res.data.reviews.length);
+                }
             } catch (error) {
-                console.error('Failed to fetch product:', error);
+                console.error("Failed to fetch product:", error);
             }
         };
         fetchProduct();
@@ -58,12 +70,12 @@ function ProductDetail() {
             <Grid container spacing={4} alignItems="center">
                 {/* Image Section */}
                 <Grid item xs={12} md={6}>
-                    <Card sx={{ boxShadow: 3, height: 550, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Card sx={{ boxShadow: 3, height: 550, display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <CardMedia
                             component="img"
                             image={`${import.meta.env.VITE_FILE_BASE_URL}${product.imageFile}`}
                             alt={product.productName}
-                            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
                         />
                     </Card>
                 </Grid>
@@ -71,24 +83,63 @@ function ProductDetail() {
                 {/* Product Details */}
                 <Grid item xs={12} md={6}>
                     {/* Product Name & Price */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <Typography variant="h3" sx={{ fontWeight: 'bold', mr: 2 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                        <Typography variant="h3" sx={{ fontWeight: "bold", mr: 2 }}>
                             {product.productName}
                         </Typography>
                         {product.variants.length > 0 && (
-                            <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'green' }}>
+                            <Typography variant="h5" sx={{ fontWeight: "bold", color: "green" }}>
                                 ${product.variants[0].price}
                             </Typography>
                         )}
                     </Box>
 
                     {/* Gender & Category */}
-                    <Typography variant="body1" sx={{ color: 'gray', mb: 2 }}>
+                    <Typography variant="body1" sx={{ color: "gray", mb: 1 }}>
                         {product.categoryGender} {product.categoryName}
                     </Typography>
 
+                    {/* Average Rating */}
+                    <Typography variant="body1" sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                        Ratings:{" "}
+                        {avgRating ? (
+                            <>
+                                <Typography sx={{ fontWeight: "bold", mx: 1 }}>{avgRating}</Typography>
+                                <StarIcon sx={{ color: "gold" }} />
+                            </>
+                        ) : (
+                            "No reviews yet"
+                        )}
+                    </Typography>
+
                     {/* Product Description */}
-                    <Typography variant="body1">{product.description}</Typography>
+                    <Typography variant="body1" sx={{ mb: 1 }}>{product.description}</Typography>
+
+                    {/* Total Reviews (Clickable Link) */}
+                    <Typography
+                        variant="body1"
+                        sx={{ textDecoration: "underline", cursor: "pointer", color: "blue" }}
+                        onClick={() => navigate(`/product/${id}/reviews`)}
+                    >
+                        {totalReviews > 0 ? `${totalReviews} reviews` : "No reviews yet"}
+                    </Typography>
+
+                    {/* Write a Review Button */}
+                    <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => navigate(`/add-review/${id}`)}
+                        sx={{
+                            textTransform: "none",
+                            borderRadius: "8px",
+                            padding: "6px 12px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px"
+                        }}
+                    >
+                        Write a Review
+                    </Button>
 
                     {/* Color Selection */}
                     <Box sx={{ mt: 3 }}>
@@ -124,15 +175,15 @@ function ProductDetail() {
                     {/* Stock Display */}
                     {selectedSize && (
                         <Typography variant="h6" sx={{ mt: 2 }}>
-                            Stock: {stock !== null ? stock : 'N/A'}
+                            Stock: {stock !== null ? stock : "N/A"}
                         </Typography>
                     )}
 
                     {/* Add to Cart Button */}
-                    <Button 
-                        variant="contained" 
-                        color="success" 
-                        sx={{ mt: 3, fontSize: '16px', fontWeight: 'bold', p: 1.5 }}
+                    <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ mt: 3, fontSize: "16px", fontWeight: "bold", p: 1.5 }}
                         disabled={!selectedSize || !selectedColor}
                     >
                         ADD TO CART
