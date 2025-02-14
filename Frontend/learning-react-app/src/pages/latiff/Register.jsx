@@ -29,11 +29,11 @@ function Register() {
                 .max(50, 'Email must be at most 50 characters')
                 .required('Email is required'),
             password: yup.string().trim()
-                .min(8, 'Password must be at least 8 characters')
+                .min(12, 'Password must be at least 12 characters')
                 .max(50, 'Password must be at most 50 characters')
                 .required('Password is required')
-                .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
-                    "Password at least 1 letter and 1 number"),
+                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{12,}$/,
+                    "Password needs a combination of lowercase, uppercase, numbers and special characters"),
             confirmPassword: yup.string().trim()
                 .required('Confirm password is required')
                 .oneOf([yup.ref('password')], 'Passwords must match')

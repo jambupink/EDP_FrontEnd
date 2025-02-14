@@ -87,18 +87,15 @@ function App() {
 
                 <Link to="/donations" ><Typography>Donate</Typography></Link>
                 <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
-                
+
                 <Box sx={{ flexGrow: 1 }}></Box>
                 <Link to="/cart" ><Typography>Cart</Typography></Link>
                 <Link to="/orders" ><Typography>Orders</Typography></Link>
                 {user && (
                   <>
 
-                  <Link to="/feedbackform"><Typography>Feedback Page</Typography></Link>
-                  <Link to="/my-feedbacks"><Typography>My Feedbacks</Typography></Link>
-                    <Typography>{user.name}</Typography>
-                    <Button onClick={logout}>Logout</Button>
-
+                    <Link to="/feedbackform"><Typography>Feedback Page</Typography></Link>
+                    <Link to="/my-feedbacks"><Typography>My Feedbacks</Typography></Link>
                     <Link to={`/account/${user.id}`}><Typography>{user.name}</Typography></Link>
 
                   </>
@@ -106,8 +103,8 @@ function App() {
                 }
                 {user && user.userRoleId == 2 && (
                   <>
-                  <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
-                  <Link to={`admin-feedbacks`}><Typography>AdminFeedback</Typography></Link>
+                    <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
+                    <Link to={`admin-feedbacks`}><Typography>AdminFeedback</Typography></Link>
                   </>
                 )}
                 {!user && (
@@ -126,7 +123,7 @@ function App() {
               <Route path={"/products"} element={<Products />} />
               <Route path={"/addproduct"} element={<AddProduct />} />
               <Route path={"/editproduct/:id"} element={<EditProduct />} />
-              <Route path="/productdetail/:id" element={<ProductDetail />} /> 
+              <Route path="/productdetail/:id" element={<ProductDetail />} />
               <Route path="/add-review/:id" element={<AddReview />} />
               <Route path="/product/:id/reviews" element={<ReviewDetail />} />
               <Route path="/edit-review/:reviewId" element={<EditReview />} />
@@ -135,7 +132,7 @@ function App() {
 
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
-              <Route path="/admin-feedbacks" element={<AdminFeedbacks />} /> 
+              <Route path="/admin-feedbacks" element={<AdminFeedbacks />} />
               <Route path={"/form"} element={<MyForm />} />
               <Route path={"/feedbackform"} element={<FeedbackForm />} />
               <Route path="/my-feedbacks" element={<MyFeedbacks />} />
@@ -151,7 +148,7 @@ function App() {
               <Route path={"/adminroles/edit/:id"} element={<RolesEdit />} />
               <Route path={"/unauthorized"} element={<Unauthorized />} />
 
-             
+
               <Route path={"/cart"} element={<CartPage />} />
               <Route path={"/orders"} element={<Orders />} />
               <Route path={"/orders/detail/:orderId"} element={<OrderDetails />} />

@@ -27,20 +27,20 @@ function EditPassword() {
         enableReinitialize: true,
         validationSchema: yup.object({
             password: yup.string().trim()
-                .min(8, 'Password must be at least 8 characters')
+                .min(12, 'Password must be at least 12 characters')
                 .max(50, 'Password must be at most 50 characters')
                 .required('Password is required')
-                .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
-                    "Password at least 1 letter and 1 number"),
+                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{12,}$/,
+                    "Password needs a combination of lowercase, uppercase, numbers and special characters"),
             confirmPassword: yup.string().trim()
-                .required('Confirm password is required')
+                .required('Confirm new password is required')
                 .oneOf([yup.ref('newPassword')], 'Passwords must match'),
             newPassword: yup.string().trim()
-                .min(8, 'Password must be at least 8 characters')
+                .min(12, 'Password must be at least 12 characters')
                 .max(50, 'Password must be at most 50 characters')
-                .required('Password is required')
-                .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
-                    "Password at least 1 letter and 1 number"),
+                .required('New Password is required')
+                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{12,}$/,
+                    "Password needs a combination of lowercase, uppercase, numbers and special characters"),
         }),
         onSubmit: (data) => {
             data.password = data.password;
@@ -73,7 +73,7 @@ function EditPassword() {
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                     helperText={formik.touched.password && Boolean(formik.errors.password)}
                                 />
-                                 <TextField
+                                <TextField
                                     fullWidth margin="dense" autoComplete="off" type="password"
                                     label="New Password"
                                     name="newPassword"
@@ -85,15 +85,15 @@ function EditPassword() {
                                 />
                                 <TextField
                                     fullWidth margin="dense" autoComplete="off" type="password"
-                                    label="Confirm Password"
-                                    name="confirmPassword"
+                                    label="Confirm New Password"
+                                    name="confirmNewPassword"
                                     value={formik.values.confirmPassword}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                                     helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                                 />
-                               
+
                             </Grid>
                         </Grid>
                         <Box sx={{ mt: 2 }}>
@@ -104,7 +104,7 @@ function EditPassword() {
                     </Box>
                 )
             }
-            <ToastContainer/>
+            <ToastContainer />
         </Box>
     )
 }
