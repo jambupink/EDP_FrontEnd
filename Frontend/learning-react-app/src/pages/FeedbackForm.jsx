@@ -24,7 +24,7 @@ function FeedbackForm() {
             title: 'My title',
             Feedback: '',
             price: 0,
-            option: 'A',
+            option: '5',
             date: dayjs().add(1, 'day'),
             time: dayjs().minute(0),
             datetime: dayjs().add(1, 'day').minute(0),

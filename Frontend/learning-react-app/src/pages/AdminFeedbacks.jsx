@@ -3,13 +3,10 @@ import { Box, Typography, List, ListItem, ListItemText, Button, CircularProgress
 import dayjs from 'dayjs';
 import http from '../http';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
-
-function MyFeedbacks() {
+function AdminFeedbacks() {
     const [feedbacks, setFeedbacks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate(); // Navigation for edit page
 
     useEffect(() => {
         fetchFeedbacks();
@@ -17,13 +14,14 @@ function MyFeedbacks() {
 
     const fetchFeedbacks = () => {
         setLoading(true);
-        http.get('/feedback/my-feedbacks')
+        http.get('/feedback/all-feedbacks') // Fetch all feedbacks
             .then((res) => {
                 setFeedbacks(res.data);
                 setLoading(false);
             })
             .catch((err) => {
                 console.error(err);
+                toast.error("Failed to fetch feedbacks.");
                 setLoading(false);
             });
     };
@@ -33,7 +31,7 @@ function MyFeedbacks() {
             http.delete(`/feedback/${id}`)
                 .then(() => {
                     toast.success("Feedback deleted successfully.");
-                    fetchFeedbacks(); // Refresh the feedback list after deletion
+                    fetchFeedbacks(); // Refresh feedbacks
                 })
                 .catch((err) => {
                     console.error(err);
@@ -49,7 +47,7 @@ function MyFeedbacks() {
     return (
         <Box>
             <Typography variant="h5" sx={{ mb: 2 }}>
-                My Feedbacks
+                All Feedbacks (Admin)
             </Typography>
             {feedbacks.length === 0 ? (
                 <Typography>No feedbacks found</Typography>
@@ -59,25 +57,15 @@ function MyFeedbacks() {
                         <ListItem key={feedback.id} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <ListItemText
                                 primary={`Rating: ${feedback.rating}`}
-                                secondary={`Feedback: ${feedback.feedbackContent || 'No feedback provided'}\nUpdated At: ${dayjs(feedback.updatedAt).format('YYYY-MM-DD HH:mm')}`}
+                                secondary={`Feedback: ${feedback.feedbackContent || 'No feedback provided'}\nUser: ${feedback.user?.username || 'Unknown'}\nUpdated At: ${dayjs(feedback.updatedAt).format('YYYY-MM-DD HH:mm')}`}
                             />
-                            <Box>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ mr: 1 }}
-                                    onClick={() => navigate(`/edit-feedback/${feedback.id}`)}
-                                >
-                                    Edit
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="error"
-                                    onClick={() => deleteFeedback(feedback.id)}
-                                >
-                                    Delete
-                                </Button>
-                            </Box>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => deleteFeedback(feedback.id)}
+                            >
+                                Delete
+                            </Button>
                         </ListItem>
                     ))}
                 </List>
@@ -86,4 +74,4 @@ function MyFeedbacks() {
     );
 }
 
-export default MyFeedbacks;
+export default AdminFeedbacks;
