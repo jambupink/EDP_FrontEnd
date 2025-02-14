@@ -30,8 +30,10 @@ function EditPassword() {
                 .min(12, 'Password must be at least 12 characters')
                 .max(50, 'Password must be at most 50 characters')
                 .required('Password is required')
-                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{12,}$/,
-                    "Password needs a combination of lowercase, uppercase, numbers and special characters"),
+                .matches(/[A-Z]/, "Must include at least one uppercase letter")
+                .matches(/[a-z]/, "Must include at least one lowercase letter")
+                .matches(/[0-9]/, "Must include at least one number")
+                .matches(/[@$!%*?&]/, "Must include at least one special character (@, $, !, %, *, ?, &)"),
             confirmPassword: yup.string().trim()
                 .required('Confirm new password is required')
                 .oneOf([yup.ref('newPassword')], 'Passwords must match'),
@@ -39,8 +41,10 @@ function EditPassword() {
                 .min(12, 'Password must be at least 12 characters')
                 .max(50, 'Password must be at most 50 characters')
                 .required('New Password is required')
-                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{12,}$/,
-                    "Password needs a combination of lowercase, uppercase, numbers and special characters"),
+                .matches(/[A-Z]/, "Must include at least one uppercase letter")
+                .matches(/[a-z]/, "Must include at least one lowercase letter")
+                .matches(/[0-9]/, "Must include at least one number")
+                .matches(/[@$!%*?&]/, "Must include at least one special character (@, $, !, %, *, ?, &)")
         }),
         onSubmit: (data) => {
             data.password = data.password;
