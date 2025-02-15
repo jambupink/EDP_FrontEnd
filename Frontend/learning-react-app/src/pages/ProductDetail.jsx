@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Grid, Button, Card, CardMedia, Select, MenuItem } from "@mui/material";
+import { Box, Typography, Grid, Button, Card, CardMedia, Select, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star"; // For star ratings
 import http from "../http";
+import { useCart } from '../contexts/CartContext';
 
 function ProductDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { addToCart } = useCart();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedColor, setSelectedColor] = useState('');
@@ -16,6 +18,7 @@ function ProductDetail() {
     const [availableColors, setAvailableColors] = useState([]);
     const [avgRating, setAvgRating] = useState(null);
     const [totalReviews, setTotalReviews] = useState(0);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -62,6 +65,52 @@ function ProductDetail() {
         const selectedVariant = product.variants.find(v => v.color === selectedColor && v.size === size);
         setStock(selectedVariant ? selectedVariant.stock : null);
     };
+
+    const handleAddToCart = () => {
+        if (!product) {
+          console.error("Product is undefined");
+          return;
+        }
+      
+        // Ensure selectedColor and selectedSize are defined
+        if (!selectedColor || !selectedSize) {
+          console.error("Selected color or size is missing");
+          return;
+        }
+      
+        // Find the selected variant based on color and size
+        const selectedVariant = product.variants.find(
+          (v) => v.color === selectedColor && v.size === selectedSize
+        );
+      
+        if (!selectedVariant) {
+          console.error("Variant not found for the selected color and size");
+          return;
+        }
+      
+        console.log('Selected Variant:', selectedVariant); // Debug log
+      
+        // Passing correct data to addToCart function
+        addToCart(
+          { 
+            variantId: selectedVariant.variantId, // Ensure variantId is correctly set
+            productId: product.id, // Using productId from the product
+            productName: product.productName,
+            imageFile: product.imageFile, // Ensure productName is passed
+            price: selectedVariant.price, // Price from the selected variant
+            stock: selectedVariant.stock, // Stock from the selected variant
+            quantity: 1 // Default quantity
+          },
+          product // Passing the full product object
+        );
+
+        setOpenModal(true);
+      };
+      
+    
+    
+    
+      
 
     if (loading) return <Typography>Loading...</Typography>;
 
@@ -185,11 +234,34 @@ function ProductDetail() {
                         color="success"
                         sx={{ mt: 3, fontSize: "16px", fontWeight: "bold", p: 1.5 }}
                         disabled={!selectedSize || !selectedColor}
+                        onClick={handleAddToCart}
                     >
                         ADD TO CART
                     </Button>
                 </Grid>
             </Grid>
+
+            <Dialog
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Item Added to Cart</DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1">
+                        The item has been successfully added to your cart!
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenModal(false)} color="primary">
+                        Close
+                    </Button>
+                    <Button onClick={() => navigate('/cart')} color="primary">
+                        Go to Cart
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
