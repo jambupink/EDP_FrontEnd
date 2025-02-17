@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Box, Typography, TextField, Button, Grid, Rating, Dialog, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import http from "../http";
@@ -13,6 +13,23 @@ function AddReview() {
     const [comment, setComment] = useState("");
     const [errorDialogOpen, setErrorDialogOpen] = useState(false);
     const [dialogMessage, setDialogMessage] = useState("");
+    const [hasPurchased, setHasPurchased] = useState(null); // Stores if user has purchased this product
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const checkPurchaseStatus = async () => {
+            try {
+                const res = await http.get(`/order/check-purchase/${id}`);
+                setHasPurchased(res.data.hasPurchased);
+            } catch (error) {
+                console.error("Error checking purchase status:", error);
+                setHasPurchased(false); // Assume they haven't purchased if there's an error
+            }
+            setLoading(false);
+        };
+
+        checkPurchaseStatus();
+    }, [id]);
 
     const handleSubmit = async () => {
         if (!rating) {
@@ -38,6 +55,8 @@ function AddReview() {
             navigate(`/productdetail/${id}`);
         } catch (error) {
             console.error("Failed to submit review:", error);
+            setDialogMessage(error.response?.data || "Failed to submit review.");
+            setErrorDialogOpen(true);
         }
     };
 
@@ -47,38 +66,53 @@ function AddReview() {
                 Add Review for {productName}
             </Typography>
 
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h6">Rating</Typography>
-                    <Rating
-                        name="rating"
-                        value={rating}
-                        precision={0.5} // Allow half-star ratings
-                        onChange={(event, newValue) => setRating(newValue)}
-                        size="large"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        label="Write your review"
-                        multiline
-                        minRows={3}
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Button variant="outlined" color="secondary" onClick={() => navigate(`/productdetail/${id}`)}>
-                        Back
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={handleSubmit}>
-                        Submit Review
-                    </Button>
-                </Grid>
-            </Grid>
+            {loading ? (
+                <Typography>Checking purchase history...</Typography>
+            ) : !hasPurchased ? (
+                <Typography color="error">
+                    You can only review products you have purchased.
+                </Typography>
+            ) : (
+                <>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Typography variant="h6">Rating</Typography>
+                            <Rating
+                                name="rating"
+                                value={rating}
+                                precision={0.5}
+                                onChange={(event, newValue) => setRating(newValue)}
+                                size="large"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Write your review"
+                                multiline
+                                minRows={3}
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
+                            <Button variant="outlined" color="secondary" onClick={() => navigate(`/productdetail/${id}`)}>
+                                Back
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleSubmit}
+                                disabled={!hasPurchased} // Disable if user hasn't purchased
+                            >
+                                Submit Review
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </>
+            )}
 
-            {/* Error Dialog (No Title, Only Message) */}
+            {/* Error Dialog */}
             <Dialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)}>
                 <DialogContent>
                     <DialogContentText>
