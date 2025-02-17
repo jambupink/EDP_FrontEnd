@@ -32,6 +32,7 @@ function EditProduct() {
                 setProduct(res.data);
                 setImageFile(res.data.imageFile);
                 setVariants(res.data.variants || []);
+                formik.setFieldValue("isArchived", res.data.isArchived);
                 setLoading(false);
             })
             .catch((error) => {
@@ -75,6 +76,7 @@ function EditProduct() {
                 price: Number(v.price).toFixed(2),
                 stock: Number(v.stock)
             }));
+            data.isArchived = formik.values.isArchived;
             http.put(`/product/${id}`, data)
                 .then((res) => {
                     toast.success("Product updated successfully!");
@@ -231,24 +233,39 @@ function EditProduct() {
                                 {variants.map((v, index) => (
                                     <Card key={index} sx={{ my: 1, p: 2, background: "#f5f5f5" }}>
                                         <CardContent>
-                                            <Typography variant="subtitle1">Color: {v.color}, Size: {v.size}, Price: ${v.price}, Stock: {v.stock}</Typography>
-                                            <IconButton onClick={() => editVariant(index)}><EditIcon /></IconButton>
-                                            <IconButton color="error" onClick={() => removeVariant(index)}><DeleteIcon /></IconButton>
+                                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                <Typography variant="subtitle1">
+                                                    Color: {v.color}, Size: {v.size}, Price: ${v.price}, Stock: {v.stock}
+                                                </Typography>
+                                                <Box>
+                                                    <IconButton onClick={() => editVariant(index)}>
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                    <IconButton color="error" onClick={() => removeVariant(index)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
                                         </CardContent>
                                     </Card>
                                 ))}
+
                                 <FormControl margin="dense">
                                     <FormControlLabel
                                         control={
                                             <Checkbox
                                                 name="isArchived"
                                                 checked={formik.values.isArchived}
-                                                onChange={formik.handleChange}
+                                                onChange={(e) => {
+                                                    formik.setFieldValue("isArchived", e.target.checked);
+                                                }}
                                             />
                                         }
                                         label="Archived"
                                     />
                                 </FormControl>
+
+
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <Box sx={{ textAlign: 'center', mt: 2 }}>

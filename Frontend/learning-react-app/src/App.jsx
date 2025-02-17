@@ -11,6 +11,7 @@ import ProductDetail from './pages/ProductDetail';
 import AddReview from "./pages/AddReview";
 import ReviewDetail from "./pages/ReviewDetail";
 import EditReview from "./pages/EditReview";
+import AdminProducts from './pages/AdminProducts';
 
 import MyForm from './pages/MyForm';
 import http from './http';
@@ -99,35 +100,37 @@ function App() {
                         <Link to="/my-feedbacks"><Typography>My Feedbacks</Typography></Link>
                         <Link to={`/account/${user.id}`}><Typography>{user.name}</Typography></Link>
 
-                      </>
-                    )
-                    }
-                    {user && user.userRoleId == 2 && (
-                      <>
-                        <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
-                        <Link to={`admin-feedbacks`}><Typography>AdminFeedback</Typography></Link>
-                      </>
-                    )}
-                    {!user && (
-                      <>
-                        <Link to="/register" ><Typography>Register</Typography></Link>
-                        <Link to="/login" ><Typography>Login</Typography></Link>
-                      </>
-                    )}
-                  </Toolbar>
-                </Container>
-              </AppBar>
+                  </>
+                )
+                }
+                {user && user.userRoleId == 2 && (
+                  <>
+                  <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
+                  <Link to={`admin-feedbacks`}><Typography>AdminFeedback</Typography></Link>
+                  <Link to="/admin-products"><Typography>Admin Products</Typography></Link>
+                  </>
+                )}
+                {!user && (
+                  <>
+                    <Link to="/register" ><Typography>Register</Typography></Link>
+                    <Link to="/login" ><Typography>Login</Typography></Link>
+                  </>
+                )}
+              </Toolbar>
+            </Container>
+          </AppBar>
 
-              <Container>
-                <Routes>
-                  <Route path={"/"} element={<Products />} />
-                  <Route path={"/products"} element={<Products />} />
-                  <Route path={"/addproduct"} element={<AddProduct />} />
-                  <Route path={"/editproduct/:id"} element={<EditProduct />} />
-                  <Route path="/productdetail/:id" element={<ProductDetail />} />
-                  <Route path="/add-review/:id" element={<AddReview />} />
-                  <Route path="/product/:id/reviews" element={<ReviewDetail />} />
-                  <Route path="/edit-review/:reviewId" element={<EditReview />} />
+          <Container>
+            <Routes>
+              <Route path={"/"} element={<Products />} />
+              <Route path={"/products"} element={<Products />} />
+              <Route path={"/addproduct"} element={<AddProduct />} />
+              <Route path={"/editproduct/:id"} element={<EditProduct />} />
+              <Route path="/productdetail/:id" element={<ProductDetail />} /> 
+              <Route path="/add-review/:id" element={<AddReview />} />
+              <Route path="/product/:id/reviews" element={<ReviewDetail />} />
+              <Route path="/edit-review/:reviewId" element={<EditReview />} />
+              <Route path="/admin-products" element={<AdminProducts />} />
 
                   {/* latiff */}
 
