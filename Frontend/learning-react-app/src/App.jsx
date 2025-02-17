@@ -51,6 +51,8 @@ import DonationSubmission from './pages/DonationSubmission';
 import Reviewrequest from './pages/Reviewrequest';
 import ViewDonations from './pages/ViewDonations';
 import Test2 from './pages/latiff/admin/Test2';
+import ForgotPassword from './pages/latiff/ForgotPassword';
+import ResetPassword from './pages/latiff/ResetPassword';
 
 
 
@@ -124,37 +126,18 @@ function App() {
               </Container>
             </AppBar>
 
-          <Container>
-            <Routes>
-              <Route path={"/"} element={<Products />} />
-              <Route path={"/products"} element={<Products />} />
-              <Route path={"/addproduct"} element={<AddProduct />} />
-              <Route path={"/editproduct/:id"} element={<EditProduct />} />
-              <Route path="/productdetail/:id" element={<ProductDetail />} />
-              <Route path="/add-review/:id" element={<AddReview />} />
-              <Route path="/product/:id/reviews" element={<ReviewDetail />} />
-              <Route path="/edit-review/:reviewId" element={<EditReview />} />
-              <Route path="/admin-products" element={<AdminProducts />} />
-
-                {/* latiff */}
-
-                <Route path={"/register"} element={<Register />} />
-                <Route path={"/login"} element={<Login />} />
+            <Container>
+              <Routes>
+                <Route path={"/"} element={<Products />} />
+                <Route path={"/products"} element={<Products />} />
+                <Route path={"/addproduct"} element={<AddProduct />} />
+                <Route path={"/editproduct/:id"} element={<EditProduct />} />
+                <Route path="/productdetail/:id" element={<ProductDetail />} />
+                <Route path="/add-review/:id" element={<AddReview />} />
+                <Route path="/product/:id/reviews" element={<ReviewDetail />} />
+                <Route path="/edit-review/:reviewId" element={<EditReview />} />
+                <Route path="/admin-products" element={<AdminProducts />} />
                 <Route path="/admin-feedbacks" element={<AdminFeedbacks />} />
-                <Route path={"/form"} element={<MyForm />} />
-                <Route path={"/feedbackform"} element={<FeedbackForm />} />
-                <Route path="/my-feedbacks" element={<MyFeedbacks />} />
-                <Route path="/edit-feedback/:id" element={<EditFeedback />} />
-                <Route path={"/editaccount/:id"} element={<EditAccount />} />
-                <Route path={"/editpassword/:id"} element={<EditPassword />} />
-                <Route path={"/confirm-email"} element={<ConfirmEmail />} />
-                <Route path={"/account/:id"} element={<AccountPage />} />
-                <Route path={"/admin/:id"} element={<AdminPage />} />
-                {/* <Route path={"/adminusers"} element={<Users />} /> */}
-                <Route path={"/adminusers/edit/:id"} element={<UsersEdit />} />
-                {/* <Route path={"/adminroles"} element={<Roles />} /> */}
-                <Route path={"/adminroles/edit/:id"} element={<RolesEdit />} />
-                <Route path={"/unauthorized"} element={<Unauthorized />} />
                 <Route path={"/cart"} element={<CartPage />} />
                 <Route path={"/orders"} element={<Orders />} />
                 <Route path={"/orders/detail/:orderId"} element={<OrderDetails />} />
@@ -166,9 +149,27 @@ function App() {
                 <Route path="/reviewrequest" element={<Reviewrequest />} />
                 <Route path="/viewdonations" element={<ViewDonations />} />
                 <Route path={"/adminfeedback"} element={<AdminFeedbacks />} />
+                <Route path={"/form"} element={<MyForm />} />
+                <Route path={"/feedbackform"} element={<FeedbackForm />} />
+                <Route path="/my-feedbacks" element={<MyFeedbacks />} />
+                <Route path="/edit-feedback/:id" element={<EditFeedback />} />
+
+                {/* latiff */}
+                <Route path={"/register"} element={<Register />} />
+                <Route path={"/login"} element={<Login />} />
+                <Route path={"/editaccount/:id"} element={<EditAccount />} />
+                <Route path={"/editpassword/:id"} element={<EditPassword />} />
+                <Route path={"/confirm-email"} element={<ConfirmEmail />} />
+                <Route path={"/account/:id"} element={<AccountPage />} />
+                <Route path={"/admin/:id"} element={<AdminPage />} />
+                {/* <Route path={"/adminusers"} element={<Users />} /> */}
+                <Route path={"/adminusers/edit/:id"} element={<UsersEdit />} />
+                {/* <Route path={"/adminroles"} element={<Roles />} /> */}
+                <Route path={"/adminroles/edit/:id"} element={<RolesEdit />} />
+                <Route path={"/unauthorized"} element={<Unauthorized />} />
+                <Route path={"/forgot-password"} element={<ForgotPassword />} />
+                <Route path={"/reset-password"} element={<ResetPassword />} />
                 <Route path={"/admintest"} element={<Test2 />} />
-
-
 
               </Routes>
             </Container>

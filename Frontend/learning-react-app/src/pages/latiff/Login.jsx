@@ -81,6 +81,9 @@ function Login() {
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
                 />
+                <Button onClick={() => navigate('/forgot-password')} sx={{ mt: 1 }}>
+                    Forgot Password?
+                </Button>
                 <Button fullWidth variant="contained" sx={{ mt: 2 }}
                     type="submit">
                     Login

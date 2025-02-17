@@ -37,12 +37,34 @@ function UsersEdit() {
         initialValues: user,
         enableReinitialize: true,
         validationSchema: yup.object({
-            name: yup.string().min(3).max(50).required("Name is required"),
-            email: yup.string().email("Invalid email").max(50).required("Email is required"),
-            password: yup.string().min(8, "At least 8 characters").nullable(),
+            name: yup.string().trim()
+                .min(3, 'Name must be at least 3 characters')
+                .max(50, 'Name must be at most 50 characters')
+                .required('Name is required')
+                .matches(/^[a-zA-Z '-,.]+$/,
+                    "Name only allow letters, spaces and characters: ' - , ."),
+            email: yup.string().trim()
+                .email('Enter a valid email')
+                .max(50, 'Email must be at most 50 characters')
+                .required('Email is required'),
+            password: yup.string().trim()
+                .min(12, 'Password must be at least 12 characters')
+                .max(50, 'Password must be at most 50 characters')
+                .nullable()
+                .matches(/[A-Z]/, "Must include at least one uppercase letter")
+                .matches(/[a-z]/, "Must include at least one lowercase letter")
+                .matches(/[0-9]/, "Must include at least one number")
+                .matches(/[@$!%*?&]/, "Must include at least one special character (@, $, !, %, *, ?, &)"),
             gender: yup.string().nullable(),
-            mobileNumber: yup.string().min(3).max(20).nullable(),
-            address: yup.string().min(3).max(200).nullable(),
+            mobileNumber: yup.string().trim()
+                .matches(/^\d+$/, "Mobile number must contain only digits")
+                .min(8, "Mobile number must be at least 8 digits")
+                .max(15, "Mobile number must be at most 15 digits")
+                .nullable(),
+            address: yup.string().trim()
+                .min(3, 'Address must be at least 3 characters')
+                .max(200, 'Address must be at most 200 characters')
+                .nullable(),
             points: yup.number().min(0, "Points must be positive").required(),
             userRoleId: yup.number().required("User role is required")
         }),
@@ -106,7 +128,9 @@ function UsersEdit() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText="Leave blank to keep current password"
+                        helperText={formik.touched.password  ? formik.errors.password : "Leave blank to keep current password"}
+                                
+                        
                     />
 
                     <FormControl fullWidth margin="dense">
