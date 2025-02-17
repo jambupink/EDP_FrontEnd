@@ -15,21 +15,23 @@ function AddReview() {
     const [dialogMessage, setDialogMessage] = useState("");
     const [hasPurchased, setHasPurchased] = useState(null); // Stores if user has purchased this product
     const [loading, setLoading] = useState(true);
+    const [orderId, setOrderId] = useState(null);
 
     useEffect(() => {
         const checkPurchaseStatus = async () => {
             try {
-                const res = await http.get(`/order/check-purchase/${id}`);
+                const res = await http.get(`/orders/check-purchase/${id}`);
                 setHasPurchased(res.data.hasPurchased);
+                setOrderId(res.data.orderId); 
             } catch (error) {
                 console.error("Error checking purchase status:", error);
-                setHasPurchased(false); // Assume they haven't purchased if there's an error
+                setHasPurchased(false);
             }
             setLoading(false);
         };
-
+    
         checkPurchaseStatus();
-    }, [id]);
+    }, [id]);    
 
     const handleSubmit = async () => {
         if (!rating) {
@@ -47,6 +49,7 @@ function AddReview() {
         try {
             await http.post("/review", {
                 productId: id,
+                orderId: orderId,
                 rating: rating,
                 comments: comment.trim(),
             });
