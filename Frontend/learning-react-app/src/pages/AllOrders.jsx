@@ -96,6 +96,7 @@ function AllOrdersPage() {
                                                         <Table size="small">
                                                             <TableHead>
                                                                 <TableRow>
+                                                                    <TableCell>Item Id</TableCell>
                                                                     <TableCell>Item Name</TableCell>
                                                                     <TableCell>Quantity</TableCell>
                                                                     <TableCell>Price</TableCell>
@@ -104,6 +105,7 @@ function AllOrdersPage() {
                                                             <TableBody>
                                                                 {order.orderItems.map((item, index) => (
                                                                     <TableRow key={index}>
+                                                                        <TableCell>{item.productId}</TableCell>
                                                                         <TableCell>{item.productName}</TableCell>
                                                                         <TableCell>{item.quantity}</TableCell>
                                                                         <TableCell>${item.price.toFixed(2)}</TableCell>
