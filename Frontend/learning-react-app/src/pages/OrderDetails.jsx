@@ -77,7 +77,8 @@ function OrderDetails() {
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Order Summary</Typography>
-                            <Typography>Total: ${order.totalPrice}</Typography>
+                            <Typography>Product total: ${order.totalPrice}</Typography>
+                            <Typography>Delivery Fee: $5.00</Typography>
                             <Typography>Status: {order.orderStatus}</Typography>
                             <Typography>Order Date: {new Date(order.orderDate).toLocaleDateString()}</Typography>
                             <Typography>Delivery Date: {new Date(order.deliveryDate).toLocaleDateString()}</Typography>
