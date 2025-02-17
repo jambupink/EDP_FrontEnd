@@ -8,7 +8,7 @@ import http from '../http';
 function Checkout() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { cartItems, userId } = location.state || {};
+    const { cartItems = [], userId } = location.state || {};
 
     const [orderConfirmed, setOrderConfirmed] = useState(false);
     const [orderId, setOrderId] = useState(null); // Store the generated orderId
@@ -19,6 +19,7 @@ function Checkout() {
 
     const [paymentDetails, setPaymentDetails] = useState({
         paymentMethod: '',
+        cardNo: '',
         cvc: '',
         amount: cartItems.reduce((total, item) => total + item.price, 0) + 5,
         customerName: '',
@@ -28,27 +29,30 @@ function Checkout() {
 
     const allowedTimes = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'];
 
+    const getMinDate = () => {
+        const date = new Date();
+        date.setDate(date.getDate() + 2); // Add 2 days
+        return date.toISOString().slice(0, 16); // Format it as 'YYYY-MM-DDTHH:MM'
+    };
     const isWeekend = (date) => {
         const day = new Date(date).getDay(); // 0 for Sunday, 6 for Saturday
         return day === 0 || day === 6; // Return true if it's a weekend (Saturday or Sunday)
     };
 
-    const handleDeliveryDateChange = (e) => {
-        const selectedDate = e.target.value;
-        const [selectedDatePart, selectedTimePart] = selectedDate.split('T');
-
-        // Extract time from the selected date (e.g., 14:00, 14:30, etc.)
-        const selectedTime = selectedTimePart ? selectedTimePart.slice(0, 5) : '';
-
+    const handleDeliveryDateChange = (event) => {
+        const selectedDate = new Date(event.target.value);
+        const selectedTime = selectedDate.toTimeString().slice(0, 5); // Extract time
+    
         if (isWeekend(selectedDate)) {
-            setDeliveryError('Delivery is not available on weekends. Please select a weekday.');
+            setDeliveryError('Delivery is not available on weekends.');
         } else if (!allowedTimes.includes(selectedTime)) {
-            setDeliveryError('Please select a valid delivery time between 09:00 and 17:00, with 30-minute intervals.');
+            setDeliveryError('Select a valid delivery time between 09:00 and 17:00, with 30-minute intervals.');
         } else {
-            setDeliveryDate(selectedDate);
+            setDeliveryDate(selectedDate.toISOString());
             setDeliveryError('');
         }
     };
+    
     // Handle order confirmation (including orderId)
     const handleOrderAndPaymentSubmit = async () => {
         setPaymentError('');
@@ -102,6 +106,17 @@ function Checkout() {
         };
 
         try {
+            console.log(cartItems);
+            await Promise.all(cartItems.map(async (item) => {
+                await http.put(`/product/update-stock/${item.productId}`, 
+                    [{
+                        VariantId: item.variantId,
+                        Stock: item.stock - item.quantity // Reduce stock
+                    }]
+                );
+            }));
+            
+
             const orderResponse = await http.post('/orders', orderData);
             const generatedOrderId = orderResponse.data.orderId;
 
@@ -118,9 +133,11 @@ function Checkout() {
             };
 
             await http.post('/payment', paymentData);
+
+
             navigate('/order-success');
         } catch (err) {
-            setError('There was an issue with your order or payment. Please try again.');
+            setPaymentError('There was an issue with your order or payment. Please try again.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -209,7 +226,10 @@ function Checkout() {
                             sx={{ mt: 2 }}
                             error={!!deliveryError}
                             helperText={deliveryError}
+                            // Set the minimum selectable date to 2 days from now
+                            inputProps={{ min: getMinDate() }}
                         />
+
                     </CardContent>
                 </Card>
 
