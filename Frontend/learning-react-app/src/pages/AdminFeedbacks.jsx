@@ -30,7 +30,7 @@ function AdminFeedbacks() {
 
     const deleteFeedback = (id) => {
         if (window.confirm("Are you sure you want to delete this feedback?")) {
-            http.delete(`/feedback/${id}`)
+            http.delete(`/feedback/admin/${id}`)
                 .then(() => {
                     toast.success("Feedback deleted successfully.");
                     fetchFeedbacks();
