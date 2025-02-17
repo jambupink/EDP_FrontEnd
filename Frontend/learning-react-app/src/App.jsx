@@ -111,7 +111,7 @@ function App() {
 
                       <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
                       <Link to={`admin-feedbacks`}><Typography>AdminFeedback</Typography></Link>
-                      <Link to="/admin-products"><Typography>Admin Products</Typography></Link>
+                      {/* <Link to="/admin-products"><Typography>Admin Products</Typography></Link> */}
                     </>
                   )}
                   {!user && (

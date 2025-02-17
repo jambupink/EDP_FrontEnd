@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Button, CircularProgress } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import http from '../http';
 import { toast } from 'react-toastify';
@@ -16,7 +16,7 @@ function AdminFeedbacks() {
 
     const fetchFeedbacks = () => {
         setLoading(true);
-        http.get('/feedback/all-feedbacks') // Fetch all feedbacks
+        http.get('/feedback/all-feedbacks')
             .then((res) => {
                 setFeedbacks(res.data);
                 setLoading(false);
@@ -33,7 +33,7 @@ function AdminFeedbacks() {
             http.delete(`/feedback/${id}`)
                 .then(() => {
                     toast.success("Feedback deleted successfully.");
-                    fetchFeedbacks(); // Refresh feedbacks
+                    fetchFeedbacks();
                 })
                 .catch((err) => {
                     console.error(err);
@@ -61,13 +61,13 @@ function AdminFeedbacks() {
                                 primary={`Rating: ${feedback.rating}`}
                                 secondary={`Feedback: ${feedback.feedbackContent || 'No feedback provided'}\nUser: ${feedback.user?.username || 'Unknown'}\nUpdated At: ${dayjs(feedback.updatedAt).format('YYYY-MM-DD HH:mm')}`}
                             />
-                            {/* <Button
+                            <Button
                                 variant="contained"
                                 color="error"
                                 onClick={() => deleteFeedback(feedback.id)}
                             >
                                 Delete
-                            </Button> */}
+                            </Button>
                         </ListItem>
                     ))}
                 </List>

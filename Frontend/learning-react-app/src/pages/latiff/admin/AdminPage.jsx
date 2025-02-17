@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Users from './Users';
 import Roles from './Roles';
 import http from '../../../http'
+import AdminProducts from '../../AdminProducts';
 
 function AdminPage() {
   const { id } = useParams();
@@ -24,7 +25,7 @@ function AdminPage() {
       setLoading(false);
     }
   }, []);
-  
+
   if (loading) {
     return <Typography>Loading...</Typography>
   }
@@ -34,19 +35,21 @@ function AdminPage() {
     return null;
   }
 
-const renderContent = () => {
+  const renderContent = () => {
     switch (selectedTab) {
       case "users":
         return <Users />;
       case "roles":
         return <Roles />;
+      case "products":
+        return <AdminProducts />;
       //  case "products":
       //    return <ProductsList />;
       default:
         return <Users />;
     }
   };
-  
+
   return (
     <Container component="main" maxWidth="lg">
       {/* Top Bar with Tabs */}
@@ -62,6 +65,12 @@ const renderContent = () => {
           onClick={() => setSelectedTab("roles")}
         >
           UserRole
+        </Button>
+        <Button
+          variant={selectedTab === "products" ? "contained" : "outlined"}
+          onClick={() => setSelectedTab("products")}
+        >
+          Products
         </Button>
         {/* <Button
           variant={selectedTab === "products" ? "contained" : "outlined"}
