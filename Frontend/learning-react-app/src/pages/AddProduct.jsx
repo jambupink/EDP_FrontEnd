@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function AddProduct() {
     const navigate = useNavigate();
     const [imageFile, setImageFile] = useState(null);
-    const categoryOptions = ["Tops", "Bottoms"];
+    const categoryOptions = ["Tops", "Bottoms", "Hats and Accessories"];
     const genderOptions = ["Men's", "Women's", "Both"];
     const [variant, setVariant] = useState({ color: "", size: "", price: "", stock: "" });
     const [variants, setVariants] = useState([]); // Stores all added variants

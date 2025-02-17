@@ -22,7 +22,11 @@ function Products() {
     useEffect(() => {
         // Show all products initially
         setFilteredProducts(productList);
-    }, [productList]); 
+        const backInStock = productList.find(p => p.wasOutOfStock && p.stock > 0);
+        if (backInStock) {
+            alert(`"${backInStock.productName}" is back in stock!`);
+        }
+    }, [productList]);
 
     const onSearchChange = (e) => setSearch(e.target.value);
 
@@ -95,14 +99,14 @@ function Products() {
                 <IconButton color="primary" onClick={onClickClear}>
                     <Clear />
                 </IconButton>
-                <Box sx={{ flexGrow: 1 }} />
+                {/* <Box sx={{ flexGrow: 1 }} />
                 {user && (
                     <Link to="/addproduct">
                         <Button variant="contained">
                             Add Product
                         </Button>
                     </Link>
-                )}
+                )} */}
             </Box>
 
             {/* Filters */}
@@ -150,11 +154,11 @@ function Products() {
                         <Link to={`/productdetail/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Card>
                                 {product.imageFile && (
-                                    <Box className="aspect-ratio-container">
+                                    <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                                         <img
-                                            alt="product"
+                                            alt={product.productName}
                                             src={`${import.meta.env.VITE_FILE_BASE_URL}${product.imageFile}`}
-                                            style={{ maxWidth: '50%', height: 'auto' }}
+                                            style={{ width: "50%", height: "200px", objectFit: "cover" }}
                                         />
                                     </Box>
                                 )}
@@ -163,13 +167,6 @@ function Products() {
                                         <Typography variant="h6" sx={{ flexGrow: 1 }}>
                                             {product.productName}
                                         </Typography>
-                                        {user && user.id === product.userId && (
-                                            <Link to={`/editproduct/${product.id}`}>
-                                                <IconButton color="primary" sx={{ padding: '4px' }}>
-                                                    <Edit />
-                                                </IconButton>
-                                            </Link>
-                                        )}
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
                                         <AccountCircle sx={{ mr: 1 }} />
@@ -190,6 +187,7 @@ function Products() {
                     </Grid>
                 ))}
             </Grid>
+
         </Box>
     );
 }

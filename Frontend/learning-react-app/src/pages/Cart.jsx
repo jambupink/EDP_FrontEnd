@@ -54,6 +54,10 @@ function Cart() {
         getCartItems();
     }, [user]);
 
+    useEffect(() => {
+        console.log("Cart Items:", cartItems); // Debugging line
+    }, [cartItems]);
+
     return (
         <Box sx={{ padding: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -74,6 +78,7 @@ function Cart() {
                                 <TableRow>
                                     <TableCell>Product</TableCell>
                                     <TableCell>Size</TableCell>
+                                    <TableCell>Colour</TableCell>
                                     <TableCell>Quantity</TableCell>
                                     <TableCell>Price</TableCell>
                                     <TableCell>Actions</TableCell>
@@ -84,11 +89,16 @@ function Cart() {
                                     <TableRow key={item.cartId}>
                                         <TableCell>
                                             <Box display="flex" alignItems="center">
-                                            
+                                                <img
+                                                src={`${import.meta.env.VITE_FILE_BASE_URL}${item.imageFile}`} // Ensure this is the correct field from your API
+                                                alt={item.productName}
+                                                style={{ width: 50, height: 50, paddingRight: 15, objectFit: 'cover', borderRadius: 4 }}
+                                                />
                                                 <Typography>{item.productName}</Typography>
                                             </Box>
                                         </TableCell>
                                         <TableCell>{item.size}</TableCell>
+                                        <TableCell>{item.color}</TableCell>
                                         <TableCell>{item.quantity}</TableCell>
                                         <TableCell>${item.price}</TableCell>
                                         <TableCell>
