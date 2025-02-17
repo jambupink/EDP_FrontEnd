@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, Card, CardContent, Button, Grid, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import http from "../http";
+import UserContext from "../contexts/UserContext"; // Import user context
 
 function ReviewDetail() {
     const { id } = useParams(); // Product ID
     const navigate = useNavigate();
+    const { user } = useContext(UserContext); // Get logged-in user
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -84,15 +86,17 @@ function ReviewDetail() {
                                         {review.comments}
                                     </Typography>
 
-                                    {/* Edit and Delete Buttons */}
-                                    <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-                                        <IconButton color="primary" onClick={() => navigate(`/edit-review/${review.reviewId}`)}>
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton color="error" onClick={() => handleDeleteClick(review.reviewId)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Box>
+                                    {/* Show Edit & Delete buttons only for Admins and Review Owners */}
+                                    {user && (user.role === "Admin" || user.id === review.userId) && (
+                                        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+                                            <IconButton color="primary" onClick={() => navigate(`/edit-review/${review.reviewId}`)}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton color="error" onClick={() => handleDeleteClick(review.reviewId)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Box>
+                                    )}
                                 </CardContent>
                             </Card>
                         </Grid>
