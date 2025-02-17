@@ -60,7 +60,7 @@ function Orders() {
                                         Placed on: {new Date(order.orderDate).toLocaleDateString()}
                                     </Typography>
                                     <Typography variant="body1" color="text.secondary">
-                                        Total: <strong>${order.totalPrice.toFixed(2)}</strong>
+                                        Total: <strong>${(order.totalPrice + 5).toFixed(2)}</strong>
                                     </Typography>
                                     <Typography variant="body1" color={order.orderStatus === 'Delivered' ? 'green' : 'orange'}>
                                         Status: {order.orderStatus || 'Pending'}

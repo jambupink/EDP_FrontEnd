@@ -101,7 +101,7 @@ function Checkout() {
         const orderData = {
             userId,
             items: cartItems,
-            total: paymentDetails.amount,
+            total: paymentDetails.amount + 5,
             deliveryDate,
         };
 
@@ -202,7 +202,6 @@ function Checkout() {
                             <Typography variant="h6">{item.productName}</Typography>
                             <Typography color="text.secondary">Size: {item.size}</Typography>
                             <Typography color="text.secondary">Quantity: {item.quantity}</Typography>
-                            <Typography color="text.secondary">Quantity: {item.stock}</Typography>
                             <Typography>${item.price.toFixed(2)}</Typography>
                         </Box>
                     </Card>
