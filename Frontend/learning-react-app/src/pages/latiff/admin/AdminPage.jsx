@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Users from './Users';
 import Roles from './Roles';
+import AllOrders from '../../AllOrders'
 import http from '../../../http'
 import AdminProducts from '../../AdminProducts';
 
@@ -43,6 +44,9 @@ function AdminPage() {
         return <Roles />;
       case "products":
         return <AdminProducts />;
+
+      case "all orders":
+        return <AllOrders />;
       //  case "products":
       //    return <ProductsList />;
       default:
@@ -66,11 +70,20 @@ function AdminPage() {
         >
           UserRole
         </Button>
+
         <Button
           variant={selectedTab === "products" ? "contained" : "outlined"}
           onClick={() => setSelectedTab("products")}
         >
           Products
+        </Button>
+
+        <Button
+          variant={selectedTab === "all orders" ? "contained" : "outlined"}
+          onClick={() => setSelectedTab("all orders")}
+        >
+          All Orders
+
         </Button>
         {/* <Button
           variant={selectedTab === "products" ? "contained" : "outlined"}
