@@ -33,7 +33,7 @@ function Products() {
     // Fetch all products
     const fetchProducts = async () => {
         try {
-            const res = await http.get('/product/my-products');
+            const res = await http.get('/product/all-products');
             setProductList(res.data);
         } catch (error) {
             console.error('Failed to fetch products:', error);

@@ -91,7 +91,7 @@ function App() {
 
 
                   <Link to="/donations" ><Typography>Donate</Typography></Link>
-                  <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
+                  <Link to="/viewdonations" ><Typography>Pending Donations</Typography></Link>
 
                   <Box sx={{ flexGrow: 1 }}></Box>
                   <Link to="/cart" ><Typography>Cart</Typography></Link>
