@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Button, CircularProgress } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import http from '../http';
 import { toast } from 'react-toastify';
@@ -7,6 +8,7 @@ import { toast } from 'react-toastify';
 function AdminFeedbacks() {
     const [feedbacks, setFeedbacks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchFeedbacks();
@@ -59,13 +61,13 @@ function AdminFeedbacks() {
                                 primary={`Rating: ${feedback.rating}`}
                                 secondary={`Feedback: ${feedback.feedbackContent || 'No feedback provided'}\nUser: ${feedback.user?.username || 'Unknown'}\nUpdated At: ${dayjs(feedback.updatedAt).format('YYYY-MM-DD HH:mm')}`}
                             />
-                            <Button
+                            {/* <Button
                                 variant="contained"
                                 color="error"
                                 onClick={() => deleteFeedback(feedback.id)}
                             >
                                 Delete
-                            </Button>
+                            </Button> */}
                         </ListItem>
                     ))}
                 </List>

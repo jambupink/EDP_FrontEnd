@@ -49,6 +49,7 @@ import Donations from './pages/Donations';
 import DonationSubmission from './pages/DonationSubmission';
 import Reviewrequest from './pages/Reviewrequest';
 import ViewDonations from './pages/ViewDonations';
+import Test2 from './pages/latiff/admin/Test2';
 
 
 
@@ -83,7 +84,7 @@ function App() {
                   </Typography>
                 </Link>
                 <Link to="/products" ><Typography>Shop</Typography></Link>
-                <Link to="/form" ><Typography>Form</Typography></Link>
+                {/* <Link to="/form" ><Typography>Form</Typography></Link> */}
 
                 <Link to="/donations" ><Typography>Donate</Typography></Link>
                 <Link to="/viewdonations" ><Typography>View Donations</Typography></Link>
@@ -104,7 +105,7 @@ function App() {
                 {user && user.userRoleId == 2 && (
                   <>
                     <Link to={`/admin/${user.id}`}><Typography>Admin Page</Typography></Link>
-                    <Link to={`admin-feedbacks`}><Typography>AdminFeedback</Typography></Link>
+                    <Link to={`/adminfeedback`}><Typography>AdminFeedback</Typography></Link>
                   </>
                 )}
                 {!user && (
@@ -159,6 +160,8 @@ function App() {
               <Route path="/donationsubmission" element={<DonationSubmission />} />
               <Route path="/reviewrequest" element={<Reviewrequest />} />
               <Route path="/viewdonations" element={<ViewDonations />} />
+              <Route path={"/adminfeedback"} element={<AdminFeedbacks />}/>
+              <Route path ={"/admintest"} element={<Test2 />} />
 
 
             </Routes>
