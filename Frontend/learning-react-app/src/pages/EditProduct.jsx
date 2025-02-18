@@ -18,7 +18,7 @@ function EditProduct() {
     const [loading, setLoading] = useState(true);
     const [editingIndex, setEditingIndex] = useState(null);
 
-    const categoryOptions = ["Tops", "Bottoms", "Hats and Accessories"];
+    const categoryOptions = ["Tops", "Bottoms", "Hats & Accessories"];
     const genderOptions = ["Men's", "Women's", "Both"];
 
     // Variant states

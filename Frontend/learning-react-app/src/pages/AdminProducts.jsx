@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography, Grid, Card, CardContent, IconButton, Button, FormControl, InputLabel, Select, MenuItem, Badge, Menu } from '@mui/material';
-import { AccountCircle, AccessTime, Edit, Notifications } from '@mui/icons-material';
+import { Edit, Notifications } from '@mui/icons-material';
 import http from '../http';
-import dayjs from 'dayjs';
 import UserContext from '../contexts/UserContext';
-import global from '../global';
 
 function AdminProducts() {
     const [productList, setProductList] = useState([]);
@@ -39,7 +37,6 @@ function AdminProducts() {
                 }
             });
 
-            // Show number only for new notifications
             setUnreadCount(newLowStock.length > prevLowStock.length ? newLowStock.length - prevLowStock.length : unreadCount);
             return merged;
         });
@@ -123,6 +120,7 @@ function AdminProducts() {
                         <MenuItem value="">All</MenuItem>
                         <MenuItem value="Tops">Tops</MenuItem>
                         <MenuItem value="Bottoms">Bottoms</MenuItem>
+                        <MenuItem value="Hats & Accessories">Hats & Accessories</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -145,28 +143,35 @@ function AdminProducts() {
             <Grid container spacing={2}>
                 {productList.filter(product => !product.isArchived).map((product) => (
                     <Grid item xs={12} md={6} lg={4} key={product.id}>
-                        <Card>
+                        <Card sx={{ height: "480px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                             {product.imageFile && (
                                 <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                                     <img
                                         alt={product.productName}
                                         src={`${import.meta.env.VITE_FILE_BASE_URL}${product.imageFile}`}
-                                        style={{ width: "50%", height: "200px", objectFit: "cover" }}
+                                        style={{ width: "90%", height: "280px", objectFit: "cover" }}
                                     />
                                 </Box>
                             )}
-                            <CardContent>
-                                <Box sx={{ display: 'flex', mb: 1 }}>
-                                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                                        {product.productName}
-                                    </Typography>
+                            <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <Typography variant="h6">{product.productName}</Typography>
                                     <Link to={`/editproduct/${product.id}`}>
                                         <IconButton color="primary">
                                             <Edit />
                                         </IconButton>
                                     </Link>
                                 </Box>
-                                <Typography sx={{ whiteSpace: 'pre-wrap' }}>
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        display: "-webkit-box",
+                                        WebkitLineClamp: 3, // Show 3 lines max
+                                        WebkitBoxOrient: "vertical"
+                                    }}
+                                >
                                     {product.description}
                                 </Typography>
                             </CardContent>
@@ -176,40 +181,48 @@ function AdminProducts() {
             </Grid>
 
             {/* Out of Stock Products */}
-<Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Out of Stock Products</Typography>
-<Grid container spacing={2}>
-    {productList.filter(product => product.isArchived).map((product) => (
-        <Grid item xs={12} md={6} lg={4} key={product.id}>
-            <Card>
-                {product.imageFile && (
-                    <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-                        <img
-                            alt={product.productName}
-                            src={`${import.meta.env.VITE_FILE_BASE_URL}${product.imageFile}`}
-                            style={{ width: "50%", height: "200px", objectFit: "cover" }}
-                        />
-                    </Box>
-                )}
-                <CardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <Typography variant="h6" sx={{ flexGrow: 1, color: "gray" }}>
-                            {product.productName} (Archived)
-                        </Typography>
-                        <Link to={`/editproduct/${product.id}`}>
-                            <IconButton color="primary">
-                                <Edit />
-                            </IconButton>
-                        </Link>
-                    </Box>
-                    <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                        {product.description}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </Grid>
-    ))}
-</Grid>
-
+            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Out of Stock Products</Typography>
+            <Grid container spacing={2}>
+                {productList.filter(product => product.isArchived).map((product) => (
+                    <Grid item xs={12} md={6} lg={4} key={product.id}>
+                        <Card sx={{ height: "480px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                            {product.imageFile && (
+                                <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                                    <img
+                                        alt={product.productName}
+                                        src={`${import.meta.env.VITE_FILE_BASE_URL}${product.imageFile}`}
+                                        style={{ width: "90%", height: "280px", objectFit: "cover" }}
+                                    />
+                                </Box>
+                            )}
+                            <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <Typography variant="h6" sx={{ color: "gray" }}>
+                                        {product.productName} (Archived)
+                                    </Typography>
+                                    <Link to={`/editproduct/${product.id}`}>
+                                        <IconButton color="primary">
+                                            <Edit />
+                                        </IconButton>
+                                    </Link>
+                                </Box>
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        display: "-webkit-box",
+                                        WebkitLineClamp: 3, // Show 3 lines max
+                                        WebkitBoxOrient: "vertical"
+                                    }}
+                                >
+                                    {product.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
         </Box>
     );
 }

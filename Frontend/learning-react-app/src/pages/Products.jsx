@@ -121,6 +121,7 @@ function Products() {
                         <MenuItem value="">All</MenuItem>
                         <MenuItem value="Tops">Tops</MenuItem>
                         <MenuItem value="Bottoms">Bottoms</MenuItem>
+                        <MenuItem value="Hats & Accessories">Hats & Accessories</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -152,33 +153,30 @@ function Products() {
                 {filteredProducts.map((product) => (
                     <Grid item xs={12} md={6} lg={4} key={product.id}>
                         <Link to={`/productdetail/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <Card>
+                            <Card sx={{ height: "500px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                                 {product.imageFile && (
                                     <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                                         <img
                                             alt={product.productName}
                                             src={`${import.meta.env.VITE_FILE_BASE_URL}${product.imageFile}`}
-                                            style={{ width: "50%", height: "200px", objectFit: "cover" }}
+                                            style={{ width: "85%", height: "300px", objectFit: "cover" }}
                                         />
                                     </Box>
                                 )}
-                                <CardContent>
-                                    <Box sx={{ display: 'flex', mb: 1 }}>
-                                        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                                            {product.productName}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
-                                        <AccountCircle sx={{ mr: 1 }} />
-                                        <Typography>{product.user?.name || 'Unknown User'}</Typography>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
-                                        <AccessTime sx={{ mr: 1 }} />
-                                        <Typography>
-                                            {dayjs(product.createdAt).format(global.datetimeFormat)}
-                                        </Typography>
-                                    </Box>
-                                    <Typography sx={{ whiteSpace: 'pre-wrap' }}>
+                                <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                    <Typography variant="h6" sx={{ textAlign: "center" }}>
+                                        {product.productName}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 3, // Show 3 lines max
+                                            WebkitBoxOrient: "vertical"
+                                        }}
+                                    >
                                         {product.description}
                                     </Typography>
                                 </CardContent>
@@ -187,7 +185,6 @@ function Products() {
                     </Grid>
                 ))}
             </Grid>
-
         </Box>
     );
 }
